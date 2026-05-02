@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "message": "Авторизация через Яндекс успешна",
+  "user": {
+    "id": 123,
+    "email": "user@example.com",
+    "name": "Иван Иванов",
+    "yandex_id": "1234567890",
+    "yandex_login": "ivan.ivanov",
+    "real_name": "Иван Иванов",
+    "avatar": "https://avatars.yandex.net/get-yapic/12345/islands-200",
+    "created_at": "2024-01-01T12:00:00.000000Z",
+    "updated_at": "2024-01-01T12:00:00.000000Z"
+  },
+  "session_id": "abc123def456ghi789jkl012mno345pqr678stu901vwx234yz"
+}
+
+
+

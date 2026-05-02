@@ -1,0 +1,3292 @@
+2025-06-15 01:18:50 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-15 01:18:50 - Отправка запроса в API
+Data: {
+    "TerminalKey": "1653907653899DEMO",
+    "Amount": 100,
+    "OrderId": "TEST-1749939530",
+    "Description": "Тестовый платеж",
+    "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+    "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+    "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+    "Receipt": {
+        "Email": "test@example.com",
+        "Phone": "+79001234567",
+        "Taxation": "osn",
+        "Items": [
+            {
+                "Name": "Тестовый товар",
+                "Price": 100,
+                "Quantity": 1,
+                "Amount": 100,
+                "Tax": "vat20",
+                "PaymentMethod": "full_prepayment",
+                "PaymentObject": "commodity"
+            }
+        ]
+    },
+    "Token": "02aeea4323be8af04d226a45a5921066bf6aa9c730efaaf41a550463d510e1fe"
+}
+2025-06-15 01:18:51 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6531636016\",\"OrderId\":\"TEST-1749939530\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/0uVZVtD6\"}",
+    "curlError": ""
+}
+2025-06-16 23:30:57 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:30:57 - Отправка запроса в API
+Data: {
+    "TerminalKey": "1653907653899DEMO",
+    "Amount": 100,
+    "OrderId": "TEST-1750105857",
+    "Description": "Тестовый платеж",
+    "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+    "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+    "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+    "Receipt": {
+        "Email": "test@example.com",
+        "Phone": "+79001234567",
+        "Taxation": "osn",
+        "Items": [
+            {
+                "Name": "Тестовый товар",
+                "Price": 100,
+                "Quantity": 1,
+                "Amount": 100,
+                "Tax": "vat20",
+                "PaymentMethod": "full_prepayment",
+                "PaymentObject": "commodity"
+            }
+        ]
+    },
+    "Token": "2dc26e8f537b9c62160fa56dd54caa808e9b549304f58aa5aae46b2ba16e868e"
+}
+2025-06-16 23:30:57 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542155903\",\"OrderId\":\"TEST-1750105857\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/X0N8fBqz\"}",
+    "curlError": ""
+}
+2025-06-16 23:36:33 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:36:33 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750106193",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "7c1617df2b370bfabc00c5068f6f465fd810787d8d326f377aa622b4e82ea388"
+    },
+    "generated_token": "7c1617df2b370bfabc00c5068f6f465fd810787d8d326f377aa622b4e82ea388",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:36:33 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542170762\",\"OrderId\":\"TEST-1750106193\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/zwW8QWkh\"}",
+    "curlError": ""
+}
+2025-06-16 23:36:37 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:36:37 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750106197",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "a7a0b313803d83a6216fb82dca176e9ccc8161b160bf3416bea5d63575052493"
+    },
+    "generated_token": "a7a0b313803d83a6216fb82dca176e9ccc8161b160bf3416bea5d63575052493",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:36:37 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542170920\",\"OrderId\":\"TEST-1750106197\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/P0SrV00m\"}",
+    "curlError": ""
+}
+2025-06-16 23:38:47 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:38:47 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750106327",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "088508c979902c5d62c5e58f0591923cb3c0d5c2e9fbc69bf06a11c7d70968f4"
+    },
+    "generated_token": "088508c979902c5d62c5e58f0591923cb3c0d5c2e9fbc69bf06a11c7d70968f4",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:38:47 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542176510\",\"OrderId\":\"TEST-1750106327\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/0FyXKblb\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750106327",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "088508c979902c5d62c5e58f0591923cb3c0d5c2e9fbc69bf06a11c7d70968f4"
+    }
+}
+2025-06-16 23:38:47 - Ошибка при создании платежа
+Data: {
+    "error": "Ошибка API: Неизвестная ошибка (Код: 0)\nВозможные причины:\n1. Неверный формат токена\n2. Неверный терминальный ключ\n3. Неверный пароль\n4. Неверный формат данных\nПолный ответ: {\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542176510\",\"OrderId\":\"TEST-1750106327\",\"Amount\":100,\"PaymentURL\":\"https:\\\/\\\/securepayments.tinkoff.ru\\\/0FyXKblb\"}",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test.php(259): createPayment()\n#1 {main}"
+}
+2025-06-16 23:40:07 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:40:07 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750106407",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "1593b7823e57896dda7043c30595e400bdf8fec61b138f24c9d00e82b66e58f8"
+    },
+    "generated_token": "1593b7823e57896dda7043c30595e400bdf8fec61b138f24c9d00e82b66e58f8",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:40:08 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542180026\",\"OrderId\":\"TEST-1750106407\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/keaBQOwJ\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750106407",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "1593b7823e57896dda7043c30595e400bdf8fec61b138f24c9d00e82b66e58f8"
+    }
+}
+2025-06-16 23:40:08 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6542180026",
+    "OrderId": "TEST-1750106407",
+    "Amount": 100,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/keaBQOwJ"
+}
+2025-06-16 23:44:32 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:44:32 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750106672",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "2ca96a7e6904098530d50203d7d3a7a32ea532402b663a6847ae5939a9819ede"
+    },
+    "generated_token": "2ca96a7e6904098530d50203d7d3a7a32ea532402b663a6847ae5939a9819ede",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:44:32 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542191734\",\"OrderId\":\"TEST-1750106672\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/N4xfe5J0\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750106672",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "2ca96a7e6904098530d50203d7d3a7a32ea532402b663a6847ae5939a9819ede"
+    }
+}
+2025-06-16 23:44:32 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6542191734",
+    "OrderId": "TEST-1750106672",
+    "Amount": 100,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/N4xfe5J0"
+}
+2025-06-16 23:44:35 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:44:35 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750106675",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "1a5c034c5ceffcce4e6e58f37e771efaa67d6591baaa8319ef47dc4e61c9d715"
+    },
+    "generated_token": "1a5c034c5ceffcce4e6e58f37e771efaa67d6591baaa8319ef47dc4e61c9d715",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:44:35 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542191864\",\"OrderId\":\"TEST-1750106675\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/Gc6Pwt4y\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750106675",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "1a5c034c5ceffcce4e6e58f37e771efaa67d6591baaa8319ef47dc4e61c9d715"
+    }
+}
+2025-06-16 23:44:35 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6542191864",
+    "OrderId": "TEST-1750106675",
+    "Amount": 100,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/Gc6Pwt4y"
+}
+2025-06-16 23:48:44 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:48:44 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750106924",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "7670e4e727974dc7766079d5cc1d82b74242b1657f17f7a05570028dcc7ed9af"
+    },
+    "generated_token": "7670e4e727974dc7766079d5cc1d82b74242b1657f17f7a05570028dcc7ed9af",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:48:44 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542202615\",\"OrderId\":\"TEST-1750106924\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/kC463RZG\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750106924",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "7670e4e727974dc7766079d5cc1d82b74242b1657f17f7a05570028dcc7ed9af"
+    }
+}
+2025-06-16 23:48:44 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6542202615",
+    "OrderId": "TEST-1750106924",
+    "Amount": 100,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/kC463RZG"
+}
+2025-06-16 23:48:48 - Проверка статуса платежа
+Data: {
+    "payment_id": "6542202615",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6542202615",
+        "Token": "900a1b238f92a55a0f735fbcc556132b661b9a3be8b95c15ee55537ea02a5e4c"
+    }
+}
+2025-06-16 23:48:48 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": ""
+}
+2025-06-16 23:48:48 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры.",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test-new.php(330): checkPaymentStatus()\n#1 {main}"
+}
+2025-06-16 23:50:02 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:50:02 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750107002",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "e5978780fb39d7967a4c84b28346cc6bca41061756130307735f0c3dfd682f0b"
+    },
+    "generated_token": "e5978780fb39d7967a4c84b28346cc6bca41061756130307735f0c3dfd682f0b",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:50:02 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542206136\",\"OrderId\":\"TEST-1750107002\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/8G2k09at\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750107002",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "e5978780fb39d7967a4c84b28346cc6bca41061756130307735f0c3dfd682f0b"
+    }
+}
+2025-06-16 23:50:02 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6542206136",
+    "OrderId": "TEST-1750107002",
+    "Amount": 100,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/8G2k09at"
+}
+2025-06-16 23:50:08 - Проверка статуса платежа
+Data: {
+    "payment_id": "6542206136",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6542206136",
+        "Token": "d1aa2188eb4d30c8ccd1b61a1dba903186b575262edf7a2f494a298a634bfa92"
+    },
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:50:08 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6542206136",
+        "Token": "d1aa2188eb4d30c8ccd1b61a1dba903186b575262edf7a2f494a298a634bfa92"
+    }
+}
+2025-06-16 23:50:08 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры. (Код: 204)",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test-new.php(339): checkPaymentStatus()\n#1 {main}"
+}
+2025-06-16 23:51:13 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:51:13 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750107073",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "27f0753590dda03aebcd8587b9c11861095087eafa298a8583e64e944600f7d7"
+    },
+    "generated_token": "27f0753590dda03aebcd8587b9c11861095087eafa298a8583e64e944600f7d7",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:51:13 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542209271\",\"OrderId\":\"TEST-1750107073\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/faR2Gknp\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750107073",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "27f0753590dda03aebcd8587b9c11861095087eafa298a8583e64e944600f7d7"
+    }
+}
+2025-06-16 23:51:13 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6542209271",
+    "OrderId": "TEST-1750107073",
+    "Amount": 100,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/faR2Gknp"
+}
+2025-06-16 23:51:17 - Проверка статуса платежа
+Data: {
+    "payment_id": "6542209271",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6542209271",
+        "Token": "d66bfb6f1fe2078984d8b7b7d93e9dd5752b70b8a66fce7753efb7ba4c3cd7a9"
+    },
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:51:17 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6542209271",
+        "Token": "d66bfb6f1fe2078984d8b7b7d93e9dd5752b70b8a66fce7753efb7ba4c3cd7a9"
+    }
+}
+2025-06-16 23:51:17 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры. (Код: 204)\nПлатеж не найден. Проверьте правильность ID платежа.",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test-new.php(366): checkPaymentStatus()\n#1 {main}"
+}
+2025-06-16 23:54:05 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:54:05 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750107245",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "4fce4f14c264617154e32f41d51ceb7cec0de088b14b79df17603f03843a5ecf"
+    },
+    "generated_token": "4fce4f14c264617154e32f41d51ceb7cec0de088b14b79df17603f03843a5ecf",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:54:05 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542216521\",\"OrderId\":\"TEST-1750107245\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/EBqliA1h\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750107245",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "4fce4f14c264617154e32f41d51ceb7cec0de088b14b79df17603f03843a5ecf"
+    }
+}
+2025-06-16 23:54:05 - Платеж успешно создан
+Data: {
+    "payment_id": "6542216521",
+    "payment_url": "https:\/\/securepayments.tinkoff.ru\/EBqliA1h",
+    "full_response": {
+        "Success": true,
+        "ErrorCode": "0",
+        "TerminalKey": "1653907653899DEMO",
+        "Status": "NEW",
+        "PaymentId": "6542216521",
+        "OrderId": "TEST-1750107245",
+        "Amount": 100,
+        "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/EBqliA1h"
+    }
+}
+2025-06-16 23:54:09 - Начало проверки статуса
+Data: {
+    "raw_payment_id": "6542216521",
+    "payment_id_length": 10,
+    "payment_id_type": "string"
+}
+2025-06-16 23:54:09 - Данные запроса проверки статуса
+Data: {
+    "payment_id": "6542216521",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6542216521",
+        "Token": "4cef7acf2dbeeef2f4dd9d2fb679aec9916fbc03dea558806198fa63c9834be8"
+    },
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2",
+    "request_json": "{\"TerminalKey\":\"1653907653899DEMO\",\"PaymentId\":\"6542216521\",\"Token\":\"4cef7acf2dbeeef2f4dd9d2fb679aec9916fbc03dea558806198fa63c9834be8\"}"
+}
+2025-06-16 23:54:09 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6542216521",
+        "Token": "4cef7acf2dbeeef2f4dd9d2fb679aec9916fbc03dea558806198fa63c9834be8"
+    },
+    "request_url": "https:\/\/securepay.tinkoff.ru\/v2\/GetState"
+}
+2025-06-16 23:54:09 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры. (Код: 204)\nПлатеж не найден. Проверьте правильность ID платежа.\nПолный ответ: {\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\\\/SecretKey.\"}",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test-new.php(379): checkPaymentStatus()\n#1 {main}",
+    "payment_id": "6542216521"
+}
+2025-06-16 23:57:48 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:57:48 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750107468",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        }
+    },
+    "sorted_values": {
+        "Amount": 100,
+        "Description": "Тестовый платеж",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "OrderId": "TEST-1750107468",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "100Тестовый платежhttps:\/\/45.10.41.84:8000\/payment\/failhttps:\/\/45.10.41.84:8000\/payment\/notificationTEST-1750107468{\"Email\":\"test@example.com\",\"Phone\":\"+79001234567\",\"Taxation\":\"osn\",\"Items\":[{\"Name\":\"Тестовый товар\",\"Price\":100,\"Quantity\":1,\"Amount\":100,\"Tax\":\"vat20\",\"PaymentMethod\":\"full_prepayment\",\"PaymentObject\":\"commodity\"}]}https:\/\/45.10.41.84:8000\/payment\/success1653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-16 23:57:48 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750107468",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "7476b6bcd88d767edfa60dee48156025c237c06d4181e86829814c6a6428c784"
+    },
+    "generated_token": "7476b6bcd88d767edfa60dee48156025c237c06d4181e86829814c6a6428c784",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-16 23:57:48 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6542226094\",\"OrderId\":\"TEST-1750107468\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/o5CVPUGg\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750107468",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "7476b6bcd88d767edfa60dee48156025c237c06d4181e86829814c6a6428c784"
+    }
+}
+2025-06-16 23:57:48 - Платеж успешно создан
+Data: {
+    "payment_id": "6542226094",
+    "payment_url": "https:\/\/securepayments.tinkoff.ru\/o5CVPUGg",
+    "full_response": {
+        "Success": true,
+        "ErrorCode": "0",
+        "TerminalKey": "1653907653899DEMO",
+        "Status": "NEW",
+        "PaymentId": "6542226094",
+        "OrderId": "TEST-1750107468",
+        "Amount": 100,
+        "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/o5CVPUGg"
+    }
+}
+2025-06-16 23:57:52 - Начало проверки статуса
+Data: {
+    "raw_payment_id": "6542226094",
+    "payment_id_length": 10,
+    "payment_id_type": "string"
+}
+2025-06-16 23:57:52 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6542226094"
+    },
+    "sorted_values": {
+        "PaymentId": "6542226094",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "65422260941653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-16 23:57:52 - Данные запроса проверки статуса
+Data: {
+    "payment_id": "6542226094",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6542226094",
+        "Token": "d9e790acd3b84c50ae8244796fe1dc1985423a7879ef236627353716cd1009d0"
+    },
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2",
+    "request_json": "{\"TerminalKey\":\"1653907653899DEMO\",\"PaymentId\":\"6542226094\",\"Token\":\"d9e790acd3b84c50ae8244796fe1dc1985423a7879ef236627353716cd1009d0\"}"
+}
+2025-06-16 23:57:52 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6542226094",
+        "Token": "d9e790acd3b84c50ae8244796fe1dc1985423a7879ef236627353716cd1009d0"
+    },
+    "request_url": "https:\/\/securepay.tinkoff.ru\/v2\/GetState"
+}
+2025-06-16 23:57:52 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры. (Код: 204)\nПлатеж не найден. Проверьте правильность ID платежа.\nДетали: Неверный токен. Проверьте пару TerminalKey\/SecretKey.\nПолный ответ: {\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\\\/SecretKey.\"}",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test-new.php(393): checkPaymentStatus()\n#1 {main}",
+    "payment_id": "6542226094"
+}
+2025-06-17 22:45:27 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 22:45:27 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750189527",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "5a487de09153be108e9dfba852336eebece67e1d6568a53402fe97aa3ea7437d"
+    },
+    "generated_token": "5a487de09153be108e9dfba852336eebece67e1d6568a53402fe97aa3ea7437d",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 22:45:27 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6547180267\",\"OrderId\":\"TEST-1750189527\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/gySezdKq\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750189527",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "5a487de09153be108e9dfba852336eebece67e1d6568a53402fe97aa3ea7437d"
+    }
+}
+2025-06-17 22:45:27 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6547180267",
+    "OrderId": "TEST-1750189527",
+    "Amount": 100,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/gySezdKq"
+}
+2025-06-17 22:45:30 - Проверка статуса платежа
+Data: {
+    "payment_id": "6547180267",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547180267",
+        "Token": "a29ad66a10202c1b422bf82581453ff3606e184f5a376b42267515e748a194b2"
+    }
+}
+2025-06-17 22:45:30 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": ""
+}
+2025-06-17 22:45:30 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры.",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test.php(330): checkPaymentStatus()\n#1 {main}"
+}
+2025-06-17 22:45:53 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 22:45:53 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750189553",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        }
+    },
+    "sorted_values": {
+        "Amount": 100,
+        "Description": "Тестовый платеж",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "OrderId": "TEST-1750189553",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "100Тестовый платежhttps:\/\/45.10.41.84:8000\/payment\/failhttps:\/\/45.10.41.84:8000\/payment\/notificationTEST-1750189553{\"Email\":\"test@example.com\",\"Phone\":\"+79001234567\",\"Taxation\":\"osn\",\"Items\":[{\"Name\":\"Тестовый товар\",\"Price\":100,\"Quantity\":1,\"Amount\":100,\"Tax\":\"vat20\",\"PaymentMethod\":\"full_prepayment\",\"PaymentObject\":\"commodity\"}]}https:\/\/45.10.41.84:8000\/payment\/success1653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-17 22:45:53 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750189553",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "6508e233970d3ae7e3e6341008eea4fe40c79bbc544df04b99c9e6e5d490090e"
+    },
+    "generated_token": "6508e233970d3ae7e3e6341008eea4fe40c79bbc544df04b99c9e6e5d490090e",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 22:45:54 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6547181424\",\"OrderId\":\"TEST-1750189553\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/iQiofPyr\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750189553",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "6508e233970d3ae7e3e6341008eea4fe40c79bbc544df04b99c9e6e5d490090e"
+    }
+}
+2025-06-17 22:45:54 - Платеж успешно создан
+Data: {
+    "payment_id": "6547181424",
+    "payment_url": "https:\/\/securepayments.tinkoff.ru\/iQiofPyr",
+    "full_response": {
+        "Success": true,
+        "ErrorCode": "0",
+        "TerminalKey": "1653907653899DEMO",
+        "Status": "NEW",
+        "PaymentId": "6547181424",
+        "OrderId": "TEST-1750189553",
+        "Amount": 100,
+        "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/iQiofPyr"
+    }
+}
+2025-06-17 22:46:00 - Начало проверки статуса
+Data: {
+    "raw_payment_id": "6547181424",
+    "payment_id_length": 10,
+    "payment_id_type": "string"
+}
+2025-06-17 22:46:00 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547181424"
+    },
+    "sorted_values": {
+        "PaymentId": "6547181424",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "65471814241653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-17 22:46:00 - Данные запроса проверки статуса
+Data: {
+    "payment_id": "6547181424",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547181424",
+        "Token": "3ab59365745de35eceda87444cfc65da1e5070cd0f2db1627548b172ffa49bdb"
+    },
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2",
+    "request_json": "{\"TerminalKey\":\"1653907653899DEMO\",\"PaymentId\":\"6547181424\",\"Token\":\"3ab59365745de35eceda87444cfc65da1e5070cd0f2db1627548b172ffa49bdb\"}"
+}
+2025-06-17 22:46:00 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547181424",
+        "Token": "3ab59365745de35eceda87444cfc65da1e5070cd0f2db1627548b172ffa49bdb"
+    },
+    "request_url": "https:\/\/securepay.tinkoff.ru\/v2\/GetState"
+}
+2025-06-17 22:46:00 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры. (Код: 204)\nПлатеж не найден. Проверьте правильность ID платежа.\nДетали: Неверный токен. Проверьте пару TerminalKey\/SecretKey.\nПолный ответ: {\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\\\/SecretKey.\"}",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test-new.php(393): checkPaymentStatus()\n#1 {main}",
+    "payment_id": "6547181424"
+}
+2025-06-17 23:03:23 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 23:03:23 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750190603",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        }
+    },
+    "sorted_values": {
+        "Amount": 100,
+        "Description": "Тестовый платеж",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "OrderId": "TEST-1750190603",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "100Тестовый платежhttps:\/\/45.10.41.84:8000\/payment\/failhttps:\/\/45.10.41.84:8000\/payment\/notificationTEST-1750190603{\"Email\":\"test@example.com\",\"Phone\":\"+79001234567\",\"Taxation\":\"osn\",\"Items\":[{\"Name\":\"Тестовый товар\",\"Price\":100,\"Quantity\":1,\"Amount\":100,\"Tax\":\"vat20\",\"PaymentMethod\":\"full_prepayment\",\"PaymentObject\":\"commodity\"}]}https:\/\/45.10.41.84:8000\/payment\/success1653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-17 23:03:23 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750190603",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "a37e54bf264a1d687687a4dae4d4794c0874567ca7c0afd34078d577c78b599b"
+    },
+    "generated_token": "a37e54bf264a1d687687a4dae4d4794c0874567ca7c0afd34078d577c78b599b",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 23:03:24 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6547224002\",\"OrderId\":\"TEST-1750190603\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/L0xxSjA0\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750190603",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "a37e54bf264a1d687687a4dae4d4794c0874567ca7c0afd34078d577c78b599b"
+    }
+}
+2025-06-17 23:03:24 - Платеж успешно создан
+Data: {
+    "payment_id": "6547224002",
+    "payment_url": "https:\/\/securepayments.tinkoff.ru\/L0xxSjA0",
+    "full_response": {
+        "Success": true,
+        "ErrorCode": "0",
+        "TerminalKey": "1653907653899DEMO",
+        "Status": "NEW",
+        "PaymentId": "6547224002",
+        "OrderId": "TEST-1750190603",
+        "Amount": 100,
+        "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/L0xxSjA0"
+    }
+}
+2025-06-17 23:03:27 - Начало проверки статуса
+Data: {
+    "raw_payment_id": "6547224002",
+    "payment_id_length": 10,
+    "payment_id_type": "string"
+}
+2025-06-17 23:03:27 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547224002"
+    },
+    "sorted_values": {
+        "PaymentId": "6547224002",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "65472240021653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-17 23:03:27 - Данные запроса проверки статуса
+Data: {
+    "payment_id": "6547224002",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547224002",
+        "Token": "cdbd17eae1c7ce3e0d14b5896b4749e33a6f2a4f462cb5f73efe0ba6bb9a8489"
+    },
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2",
+    "request_json": "{\"TerminalKey\":\"1653907653899DEMO\",\"PaymentId\":\"6547224002\",\"Token\":\"cdbd17eae1c7ce3e0d14b5896b4749e33a6f2a4f462cb5f73efe0ba6bb9a8489\"}"
+}
+2025-06-17 23:03:27 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547224002",
+        "Token": "cdbd17eae1c7ce3e0d14b5896b4749e33a6f2a4f462cb5f73efe0ba6bb9a8489"
+    },
+    "request_url": "https:\/\/securepay.tinkoff.ru\/v2\/GetState"
+}
+2025-06-17 23:03:27 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры. (Код: 204)\nПлатеж не найден. Проверьте правильность ID платежа.\nДетали: Неверный токен. Проверьте пару TerminalKey\/SecretKey.\nПолный ответ: {\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\\\/SecretKey.\"}",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test-new.php(393): checkPaymentStatus()\n#1 {main}",
+    "payment_id": "6547224002"
+}
+2025-06-17 23:13:48 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 23:13:48 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750191228",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        }
+    },
+    "sorted_values": {
+        "Amount": 100,
+        "Description": "Тестовый платеж",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "OrderId": "TEST-1750191228",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "100Тестовый платежhttps:\/\/45.10.41.84:8000\/payment\/failhttps:\/\/45.10.41.84:8000\/payment\/notificationTEST-1750191228{\"Email\":\"test@example.com\",\"Phone\":\"+79001234567\",\"Taxation\":\"osn\",\"Items\":[{\"Name\":\"Тестовый товар\",\"Price\":100,\"Quantity\":1,\"Amount\":100,\"Tax\":\"vat20\",\"PaymentMethod\":\"full_prepayment\",\"PaymentObject\":\"commodity\"}]}https:\/\/45.10.41.84:8000\/payment\/success1653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-17 23:13:48 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750191228",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "ecd48a08bfffd4c4167b70bd260ab699722a78b48d01c82329413a0d966f59ab"
+    },
+    "generated_token": "ecd48a08bfffd4c4167b70bd260ab699722a78b48d01c82329413a0d966f59ab",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 23:13:49 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6547246704\",\"OrderId\":\"TEST-1750191228\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/RO487qD9\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750191228",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "ecd48a08bfffd4c4167b70bd260ab699722a78b48d01c82329413a0d966f59ab"
+    }
+}
+2025-06-17 23:13:49 - Платеж успешно создан
+Data: {
+    "payment_id": "6547246704",
+    "payment_url": "https:\/\/securepayments.tinkoff.ru\/RO487qD9",
+    "full_response": {
+        "Success": true,
+        "ErrorCode": "0",
+        "TerminalKey": "1653907653899DEMO",
+        "Status": "NEW",
+        "PaymentId": "6547246704",
+        "OrderId": "TEST-1750191228",
+        "Amount": 100,
+        "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/RO487qD9"
+    }
+}
+2025-06-17 23:13:52 - Начало проверки статуса
+Data: {
+    "raw_payment_id": "6547246704",
+    "payment_id_length": 10,
+    "payment_id_type": "string"
+}
+2025-06-17 23:13:52 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547246704"
+    },
+    "sorted_values": {
+        "PaymentId": "6547246704",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "65472467041653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-17 23:13:52 - Данные запроса проверки статуса
+Data: {
+    "payment_id": "6547246704",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547246704",
+        "Token": "2aa61fa4da268e5082ade79787363e1b1b163df5af2a7202a6555c213a9682ad"
+    },
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2",
+    "request_json": "{\"TerminalKey\":\"1653907653899DEMO\",\"PaymentId\":\"6547246704\",\"Token\":\"2aa61fa4da268e5082ade79787363e1b1b163df5af2a7202a6555c213a9682ad\"}"
+}
+2025-06-17 23:13:52 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547246704",
+        "Token": "2aa61fa4da268e5082ade79787363e1b1b163df5af2a7202a6555c213a9682ad"
+    },
+    "request_url": "https:\/\/securepay.tinkoff.ru\/v2\/GetState"
+}
+2025-06-17 23:13:52 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры. (Код: 204)\nПлатеж не найден. Проверьте правильность ID платежа.\nДетали: Неверный токен. Проверьте пару TerminalKey\/SecretKey.\nПолный ответ: {\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\\\/SecretKey.\"}",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test-new.php(393): checkPaymentStatus()\n#1 {main}",
+    "payment_id": "6547246704"
+}
+2025-06-17 23:13:57 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 23:13:57 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750191237",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        }
+    },
+    "sorted_values": {
+        "Amount": 100,
+        "Description": "Тестовый платеж",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "OrderId": "TEST-1750191237",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "100Тестовый платежhttps:\/\/45.10.41.84:8000\/payment\/failhttps:\/\/45.10.41.84:8000\/payment\/notificationTEST-1750191237{\"Email\":\"test@example.com\",\"Phone\":\"+79001234567\",\"Taxation\":\"osn\",\"Items\":[{\"Name\":\"Тестовый товар\",\"Price\":100,\"Quantity\":1,\"Amount\":100,\"Tax\":\"vat20\",\"PaymentMethod\":\"full_prepayment\",\"PaymentObject\":\"commodity\"}]}https:\/\/45.10.41.84:8000\/payment\/success1653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-17 23:13:57 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750191237",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "ee743b5332a827b192af5d248be041a2f9f28ce6085390d4232da01ca620a57d"
+    },
+    "generated_token": "ee743b5332a827b192af5d248be041a2f9f28ce6085390d4232da01ca620a57d",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 23:13:57 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6547246979\",\"OrderId\":\"TEST-1750191237\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/ey0zRfj8\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750191237",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "ee743b5332a827b192af5d248be041a2f9f28ce6085390d4232da01ca620a57d"
+    }
+}
+2025-06-17 23:13:57 - Платеж успешно создан
+Data: {
+    "payment_id": "6547246979",
+    "payment_url": "https:\/\/securepayments.tinkoff.ru\/ey0zRfj8",
+    "full_response": {
+        "Success": true,
+        "ErrorCode": "0",
+        "TerminalKey": "1653907653899DEMO",
+        "Status": "NEW",
+        "PaymentId": "6547246979",
+        "OrderId": "TEST-1750191237",
+        "Amount": 100,
+        "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/ey0zRfj8"
+    }
+}
+2025-06-17 23:14:01 - Начало проверки статуса
+Data: {
+    "raw_payment_id": "6547246979",
+    "payment_id_length": 10,
+    "payment_id_type": "string"
+}
+2025-06-17 23:14:01 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547246979"
+    },
+    "sorted_values": {
+        "PaymentId": "6547246979",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "65472469791653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-17 23:14:01 - Данные запроса проверки статуса
+Data: {
+    "payment_id": "6547246979",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547246979",
+        "Token": "6a1c841715d16b8c627e17c335db32f43987376e16ef4dcce3e970330fde1191"
+    },
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2",
+    "request_json": "{\"TerminalKey\":\"1653907653899DEMO\",\"PaymentId\":\"6547246979\",\"Token\":\"6a1c841715d16b8c627e17c335db32f43987376e16ef4dcce3e970330fde1191\"}"
+}
+2025-06-17 23:14:01 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547246979",
+        "Token": "6a1c841715d16b8c627e17c335db32f43987376e16ef4dcce3e970330fde1191"
+    },
+    "request_url": "https:\/\/securepay.tinkoff.ru\/v2\/GetState"
+}
+2025-06-17 23:14:01 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры. (Код: 204)\nПлатеж не найден. Проверьте правильность ID платежа.\nДетали: Неверный токен. Проверьте пару TerminalKey\/SecretKey.\nПолный ответ: {\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\\\/SecretKey.\"}",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test-new.php(393): checkPaymentStatus()\n#1 {main}",
+    "payment_id": "6547246979"
+}
+2025-06-17 23:23:17 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 23:23:17 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750191797",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        }
+    },
+    "sorted_values": {
+        "Amount": 100,
+        "Description": "Тестовый платеж",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "OrderId": "TEST-1750191797",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "100Тестовый платежhttps:\/\/45.10.41.84:8000\/payment\/failhttps:\/\/45.10.41.84:8000\/payment\/notificationTEST-1750191797{\"Email\":\"test@example.com\",\"Phone\":\"+79001234567\",\"Taxation\":\"osn\",\"Items\":[{\"Name\":\"Тестовый товар\",\"Price\":100,\"Quantity\":1,\"Amount\":100,\"Tax\":\"vat20\",\"PaymentMethod\":\"full_prepayment\",\"PaymentObject\":\"commodity\"}]}https:\/\/45.10.41.84:8000\/payment\/success1653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-17 23:23:17 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750191797",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "4a5c9a40de275572355a98727a5bcc7cd7201f5c79a096374b290f9844223bd7"
+    },
+    "generated_token": "4a5c9a40de275572355a98727a5bcc7cd7201f5c79a096374b290f9844223bd7",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 23:23:18 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6547266142\",\"OrderId\":\"TEST-1750191797\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/lyJj8CHB\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750191797",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "4a5c9a40de275572355a98727a5bcc7cd7201f5c79a096374b290f9844223bd7"
+    }
+}
+2025-06-17 23:23:18 - Платеж успешно создан
+Data: {
+    "payment_id": "6547266142",
+    "payment_url": "https:\/\/securepayments.tinkoff.ru\/lyJj8CHB",
+    "full_response": {
+        "Success": true,
+        "ErrorCode": "0",
+        "TerminalKey": "1653907653899DEMO",
+        "Status": "NEW",
+        "PaymentId": "6547266142",
+        "OrderId": "TEST-1750191797",
+        "Amount": 100,
+        "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/lyJj8CHB"
+    }
+}
+2025-06-17 23:23:21 - Начало проверки статуса
+Data: {
+    "raw_payment_id": "6547266142",
+    "payment_id_length": 10,
+    "payment_id_type": "string"
+}
+2025-06-17 23:23:21 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547266142"
+    },
+    "sorted_values": {
+        "PaymentId": "6547266142",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "65472661421653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-17 23:23:21 - Данные запроса проверки статуса
+Data: {
+    "payment_id": "6547266142",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547266142",
+        "Token": "8c35458f16283cbb82bfceca7626f9e9a0ff40fb14c0c5318c1b3b0c52c860f1"
+    },
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2",
+    "request_json": "{\"TerminalKey\":\"1653907653899DEMO\",\"PaymentId\":\"6547266142\",\"Token\":\"8c35458f16283cbb82bfceca7626f9e9a0ff40fb14c0c5318c1b3b0c52c860f1\"}"
+}
+2025-06-17 23:23:21 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547266142",
+        "Token": "8c35458f16283cbb82bfceca7626f9e9a0ff40fb14c0c5318c1b3b0c52c860f1"
+    },
+    "request_url": "https:\/\/securepay.tinkoff.ru\/v2\/GetState"
+}
+2025-06-17 23:23:21 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры. (Код: 204)\nПлатеж не найден. Проверьте правильность ID платежа.\nДетали: Неверный токен. Проверьте пару TerminalKey\/SecretKey.\nПолный ответ: {\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\\\/SecretKey.\"}",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test-new.php(393): checkPaymentStatus()\n#1 {main}",
+    "payment_id": "6547266142"
+}
+2025-06-17 23:29:03 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 23:29:03 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750192143",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        }
+    },
+    "sorted_values": {
+        "Amount": 100,
+        "Description": "Тестовый платеж",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "OrderId": "TEST-1750192143",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "100Тестовый платежhttps:\/\/45.10.41.84:8000\/payment\/failhttps:\/\/45.10.41.84:8000\/payment\/notificationTEST-1750192143{\"Email\":\"test@example.com\",\"Phone\":\"+79001234567\",\"Taxation\":\"osn\",\"Items\":[{\"Name\":\"Тестовый товар\",\"Price\":100,\"Quantity\":1,\"Amount\":100,\"Tax\":\"vat20\",\"PaymentMethod\":\"full_prepayment\",\"PaymentObject\":\"commodity\"}]}https:\/\/45.10.41.84:8000\/payment\/success1653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-17 23:29:03 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750192143",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "807cfa4f7b4698dc1f699c688c823d99f16043ec9a88b8f9d624ad9df7261dc7"
+    },
+    "generated_token": "807cfa4f7b4698dc1f699c688c823d99f16043ec9a88b8f9d624ad9df7261dc7",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-17 23:29:03 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6547277529\",\"OrderId\":\"TEST-1750192143\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/Ub9V5iCY\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750192143",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "807cfa4f7b4698dc1f699c688c823d99f16043ec9a88b8f9d624ad9df7261dc7"
+    }
+}
+2025-06-17 23:29:03 - Платеж успешно создан
+Data: {
+    "payment_id": "6547277529",
+    "payment_url": "https:\/\/securepayments.tinkoff.ru\/Ub9V5iCY",
+    "full_response": {
+        "Success": true,
+        "ErrorCode": "0",
+        "TerminalKey": "1653907653899DEMO",
+        "Status": "NEW",
+        "PaymentId": "6547277529",
+        "OrderId": "TEST-1750192143",
+        "Amount": 100,
+        "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/Ub9V5iCY"
+    }
+}
+2025-06-17 23:29:07 - Начало проверки статуса
+Data: {
+    "raw_payment_id": "6547277529",
+    "payment_id_length": 10,
+    "payment_id_type": "string"
+}
+2025-06-17 23:29:07 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547277529"
+    },
+    "sorted_values": {
+        "PaymentId": "6547277529",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "65472775291653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-17 23:29:07 - Данные запроса проверки статуса
+Data: {
+    "payment_id": "6547277529",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547277529",
+        "Token": "dede159a49fca3b338f7e920d6cbc97bd6a83600b6d5e13c04476655e99f4679"
+    },
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2",
+    "request_json": "{\"TerminalKey\":\"1653907653899DEMO\",\"PaymentId\":\"6547277529\",\"Token\":\"dede159a49fca3b338f7e920d6cbc97bd6a83600b6d5e13c04476655e99f4679\"}"
+}
+2025-06-17 23:29:07 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6547277529",
+        "Token": "dede159a49fca3b338f7e920d6cbc97bd6a83600b6d5e13c04476655e99f4679"
+    },
+    "request_url": "https:\/\/securepay.tinkoff.ru\/v2\/GetState"
+}
+2025-06-17 23:29:07 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры. (Код: 204)\nПлатеж не найден. Проверьте правильность ID платежа.\nДетали: Неверный токен. Проверьте пару TerminalKey\/SecretKey.\nПолный ответ: {\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\\\/SecretKey.\"}",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test-new.php(393): checkPaymentStatus()\n#1 {main}",
+    "payment_id": "6547277529"
+}
+2025-06-18 23:11:49 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-18 23:11:49 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750277509",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "dfeb94632ae1750179c88032437a0703ee2939e53f983b9f1a2954a4c1430b9e"
+    },
+    "generated_token": "dfeb94632ae1750179c88032437a0703ee2939e53f983b9f1a2954a4c1430b9e",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-18 23:11:50 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6552552786\",\"OrderId\":\"TEST-1750277509\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/KeadJrjB\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750277509",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "dfeb94632ae1750179c88032437a0703ee2939e53f983b9f1a2954a4c1430b9e"
+    }
+}
+2025-06-18 23:11:50 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6552552786",
+    "OrderId": "TEST-1750277509",
+    "Amount": 100,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/KeadJrjB"
+}
+2025-06-18 23:11:53 - Проверка статуса платежа
+Data: {
+    "payment_id": "6552552786",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6552552786",
+        "Token": "7ad001f92101cdf50d168ae1804e688d9226676d5efa7b5a77abc4070a731f2a"
+    }
+}
+2025-06-18 23:11:53 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": ""
+}
+2025-06-18 23:11:53 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры.",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test.php(330): checkPaymentStatus()\n#1 {main}"
+}
+2025-06-18 23:12:02 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-18 23:12:02 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750277522",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        }
+    },
+    "sorted_values": {
+        "Amount": 100,
+        "Description": "Тестовый платеж",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "OrderId": "TEST-1750277522",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "100Тестовый платежhttps:\/\/45.10.41.84:8000\/payment\/failhttps:\/\/45.10.41.84:8000\/payment\/notificationTEST-1750277522{\"Email\":\"test@example.com\",\"Phone\":\"+79001234567\",\"Taxation\":\"osn\",\"Items\":[{\"Name\":\"Тестовый товар\",\"Price\":100,\"Quantity\":1,\"Amount\":100,\"Tax\":\"vat20\",\"PaymentMethod\":\"full_prepayment\",\"PaymentObject\":\"commodity\"}]}https:\/\/45.10.41.84:8000\/payment\/success1653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-18 23:12:02 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750277522",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "97a25b7cdbb7ee10ae3d7b568125af403b8239ae477ce31cb72471332f01815e"
+    },
+    "generated_token": "97a25b7cdbb7ee10ae3d7b568125af403b8239ae477ce31cb72471332f01815e",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-18 23:12:02 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6552553270\",\"OrderId\":\"TEST-1750277522\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/bic84NAg\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1750277522",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "97a25b7cdbb7ee10ae3d7b568125af403b8239ae477ce31cb72471332f01815e"
+    }
+}
+2025-06-18 23:12:02 - Платеж успешно создан
+Data: {
+    "payment_id": "6552553270",
+    "payment_url": "https:\/\/securepayments.tinkoff.ru\/bic84NAg",
+    "full_response": {
+        "Success": true,
+        "ErrorCode": "0",
+        "TerminalKey": "1653907653899DEMO",
+        "Status": "NEW",
+        "PaymentId": "6552553270",
+        "OrderId": "TEST-1750277522",
+        "Amount": 100,
+        "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/bic84NAg"
+    }
+}
+2025-06-18 23:12:06 - Начало проверки статуса
+Data: {
+    "raw_payment_id": "6552553270",
+    "payment_id_length": 10,
+    "payment_id_type": "string"
+}
+2025-06-18 23:12:06 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6552553270"
+    },
+    "sorted_values": {
+        "PaymentId": "6552553270",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "65525532701653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-18 23:12:06 - Данные запроса проверки статуса
+Data: {
+    "payment_id": "6552553270",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6552553270",
+        "Token": "c8fca0669a1a7f354663f8459059ba337ba92b06d634b40e047f03c4f9d06c62"
+    },
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2",
+    "request_json": "{\"TerminalKey\":\"1653907653899DEMO\",\"PaymentId\":\"6552553270\",\"Token\":\"c8fca0669a1a7f354663f8459059ba337ba92b06d634b40e047f03c4f9d06c62\"}"
+}
+2025-06-18 23:12:06 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6552553270",
+        "Token": "c8fca0669a1a7f354663f8459059ba337ba92b06d634b40e047f03c4f9d06c62"
+    },
+    "request_url": "https:\/\/securepay.tinkoff.ru\/v2\/GetState"
+}
+2025-06-18 23:12:06 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры. (Код: 204)\nПлатеж не найден. Проверьте правильность ID платежа.\nДетали: Неверный токен. Проверьте пару TerminalKey\/SecretKey.\nПолный ответ: {\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\\\/SecretKey.\"}",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test-new.php(393): checkPaymentStatus()\n#1 {main}",
+    "payment_id": "6552553270"
+}
+2025-06-24 22:00:39 - Начало создания платежа
+Data: {
+    "amount": "2000",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-24 22:00:39 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 200000,
+        "OrderId": "TEST-1750791639",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 200000,
+                    "Quantity": 1,
+                    "Amount": 200000,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "1e3335c527e788410ab0b3a5ec0bfd5550e3b2794309f08029825e1d21da8add"
+    },
+    "generated_token": "1e3335c527e788410ab0b3a5ec0bfd5550e3b2794309f08029825e1d21da8add",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-24 22:00:39 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6583631624\",\"OrderId\":\"TEST-1750791639\",\"Amount\":200000,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/wE4NfVmE\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 200000,
+        "OrderId": "TEST-1750791639",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 200000,
+                    "Quantity": 1,
+                    "Amount": 200000,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "1e3335c527e788410ab0b3a5ec0bfd5550e3b2794309f08029825e1d21da8add"
+    }
+}
+2025-06-24 22:00:39 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6583631624",
+    "OrderId": "TEST-1750791639",
+    "Amount": 200000,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/wE4NfVmE"
+}
+2025-06-24 23:18:54 - Начало создания платежа
+Data: {
+    "amount": "5000",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-24 23:18:54 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 500000,
+        "OrderId": "TEST-1750796334",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 500000,
+                    "Quantity": 1,
+                    "Amount": 500000,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "4296429fd43c3cb344eb20449e236c93dedd4cd90a4d979e470b9789ba369dea"
+    },
+    "generated_token": "4296429fd43c3cb344eb20449e236c93dedd4cd90a4d979e470b9789ba369dea",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-24 23:18:54 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6583824423\",\"OrderId\":\"TEST-1750796334\",\"Amount\":500000,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/kFbEBbfl\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 500000,
+        "OrderId": "TEST-1750796334",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 500000,
+                    "Quantity": 1,
+                    "Amount": 500000,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "4296429fd43c3cb344eb20449e236c93dedd4cd90a4d979e470b9789ba369dea"
+    }
+}
+2025-06-24 23:18:54 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6583824423",
+    "OrderId": "TEST-1750796334",
+    "Amount": 500000,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/kFbEBbfl"
+}
+2025-06-29 17:44:58 - Начало создания платежа
+Data: {
+    "amount": "45.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-29 17:44:58 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 4500,
+        "OrderId": "TEST-1751208298",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 4500,
+                    "Quantity": 1,
+                    "Amount": 4500,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "d9a4cb718d6320fbc445db44aea16ef37f0304be4f8055a90e1d0e58963b2030"
+    },
+    "generated_token": "d9a4cb718d6320fbc445db44aea16ef37f0304be4f8055a90e1d0e58963b2030",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-29 17:44:59 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6608307994\",\"OrderId\":\"TEST-1751208298\",\"Amount\":4500,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/cX9QOaHe\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 4500,
+        "OrderId": "TEST-1751208298",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 4500,
+                    "Quantity": 1,
+                    "Amount": 4500,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "d9a4cb718d6320fbc445db44aea16ef37f0304be4f8055a90e1d0e58963b2030"
+    }
+}
+2025-06-29 17:44:59 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6608307994",
+    "OrderId": "TEST-1751208298",
+    "Amount": 4500,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/cX9QOaHe"
+}
+2025-06-29 22:25:33 - Начало создания платежа
+Data: {
+    "amount": "11.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-29 22:25:33 - Генерация токена
+Data: {
+    "input_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 1100,
+        "OrderId": "TEST-1751225133",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 1100,
+                    "Quantity": 1,
+                    "Amount": 1100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        }
+    },
+    "sorted_values": {
+        "Amount": 1100,
+        "Description": "Тестовый платеж",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "OrderId": "TEST-1751225133",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 1100,
+                    "Quantity": 1,
+                    "Amount": 1100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "TerminalKey": "1653907653899DEMO"
+    },
+    "values_string": "1100Тестовый платежhttps:\/\/45.10.41.84:8000\/payment\/failhttps:\/\/45.10.41.84:8000\/payment\/notificationTEST-1751225133{\"Email\":\"test@example.com\",\"Phone\":\"+79001234567\",\"Taxation\":\"osn\",\"Items\":[{\"Name\":\"Тестовый товар\",\"Price\":1100,\"Quantity\":1,\"Amount\":1100,\"Tax\":\"vat20\",\"PaymentMethod\":\"full_prepayment\",\"PaymentObject\":\"commodity\"}]}https:\/\/45.10.41.84:8000\/payment\/success1653907653899DEMOklnl6jxmdfu30gm5",
+    "password_length": 16
+}
+2025-06-29 22:25:33 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 1100,
+        "OrderId": "TEST-1751225133",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 1100,
+                    "Quantity": 1,
+                    "Amount": 1100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "95df33cc6ed219c92253e2bd0d381da3cd78662a8023b668e2cb332b07ae70a1"
+    },
+    "generated_token": "95df33cc6ed219c92253e2bd0d381da3cd78662a8023b668e2cb332b07ae70a1",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-29 22:25:33 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6609332579\",\"OrderId\":\"TEST-1751225133\",\"Amount\":1100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/hrpnCZie\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 1100,
+        "OrderId": "TEST-1751225133",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 1100,
+                    "Quantity": 1,
+                    "Amount": 1100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "95df33cc6ed219c92253e2bd0d381da3cd78662a8023b668e2cb332b07ae70a1"
+    }
+}
+2025-06-29 22:25:33 - Платеж успешно создан
+Data: {
+    "payment_id": "6609332579",
+    "payment_url": "https:\/\/securepayments.tinkoff.ru\/hrpnCZie",
+    "full_response": {
+        "Success": true,
+        "ErrorCode": "0",
+        "TerminalKey": "1653907653899DEMO",
+        "Status": "NEW",
+        "PaymentId": "6609332579",
+        "OrderId": "TEST-1751225133",
+        "Amount": 1100,
+        "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/hrpnCZie"
+    }
+}
+2025-06-30 17:20:48 - Начало создания платежа
+Data: {
+    "amount": "19.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-30 17:20:48 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 1900,
+        "OrderId": "TEST-1751293248",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 1900,
+                    "Quantity": 1,
+                    "Amount": 1900,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "b8783c30daaf1509063d0524e2d27103cf717957c34389ebbcfad747929bd0dd"
+    },
+    "generated_token": "b8783c30daaf1509063d0524e2d27103cf717957c34389ebbcfad747929bd0dd",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-30 17:20:48 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6613319047\",\"OrderId\":\"TEST-1751293248\",\"Amount\":1900,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/ojj1wNLy\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 1900,
+        "OrderId": "TEST-1751293248",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 1900,
+                    "Quantity": 1,
+                    "Amount": 1900,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "b8783c30daaf1509063d0524e2d27103cf717957c34389ebbcfad747929bd0dd"
+    }
+}
+2025-06-30 17:20:48 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6613319047",
+    "OrderId": "TEST-1751293248",
+    "Amount": 1900,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/ojj1wNLy"
+}
+2025-06-30 17:32:51 - Проверка статуса платежа
+Data: {
+    "payment_id": "6613319047",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "PaymentId": "6613319047",
+        "Token": "feee56f3fd0903768b0ab670944408a3a811c52eec939144a661b0c43d73641e"
+    }
+}
+2025-06-30 17:32:51 - Ответ от API при проверке статуса
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":false,\"ErrorCode\":\"204\",\"Message\":\"Неверные параметры.\",\"Details\":\"Неверный токен. Проверьте пару TerminalKey\/SecretKey.\"}",
+    "curlError": ""
+}
+2025-06-30 17:32:51 - Ошибка при проверке статуса
+Data: {
+    "error": "Ошибка API: Неверные параметры.",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test.php(330): checkPaymentStatus()\n#1 {main}"
+}
+2025-06-30 17:39:22 - Ошибка при создании платежа
+Data: {
+    "error": "Отсутствуют обязательные переменные окружения: Терминальный ключ (TINKOFF_TERMINAL_KEY)",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test.php(107): checkEnvironment()\n#1 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test.php(338): createPayment()\n#2 {main}"
+}
+2025-06-30 17:39:29 - Ошибка при создании платежа
+Data: {
+    "error": "Отсутствуют обязательные переменные окружения: Терминальный ключ (TINKOFF_TERMINAL_KEY)",
+    "trace": "#0 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test.php(107): checkEnvironment()\n#1 \/var\/www\/sancan.ru\/pixer-api\/public\/tinkoff-test.php(338): createPayment()\n#2 {main}"
+}
+2025-06-30 17:46:20 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-30 17:46:20 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1751294780",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "2afc8fcfc27ed873147b56234b2fb3d68586eb9ebfe2fbd1550fcd991889a961"
+    },
+    "generated_token": "2afc8fcfc27ed873147b56234b2fb3d68586eb9ebfe2fbd1550fcd991889a961",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-30 17:46:20 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6613441277\",\"OrderId\":\"TEST-1751294780\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/HRXosJbA\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1751294780",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "2afc8fcfc27ed873147b56234b2fb3d68586eb9ebfe2fbd1550fcd991889a961"
+    }
+}
+2025-06-30 17:46:20 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6613441277",
+    "OrderId": "TEST-1751294780",
+    "Amount": 100,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/HRXosJbA"
+}
+2025-06-30 17:52:41 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-30 17:52:41 - Отправка запроса в API
+Data: {
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1751295161",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "cb5e61e50715dc730def71d5b7da4159a263fd0f2aef2806fe8d7d614ab15f3b"
+    },
+    "generated_token": "cb5e61e50715dc730def71d5b7da4159a263fd0f2aef2806fe8d7d614ab15f3b",
+    "terminal_key": "1653907653899DEMO",
+    "api_url": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-30 17:52:41 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6613472586\",\"OrderId\":\"TEST-1751295161\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/p5Ox81qG\"}",
+    "curlError": "",
+    "request_data": {
+        "TerminalKey": "1653907653899DEMO",
+        "Amount": 100,
+        "OrderId": "TEST-1751295161",
+        "Description": "Тестовый платеж",
+        "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+        "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+        "NotificationURL": "https:\/\/45.10.41.84:8000\/payment\/notification",
+        "Receipt": {
+            "Email": "test@example.com",
+            "Phone": "+79001234567",
+            "Taxation": "osn",
+            "Items": [
+                {
+                    "Name": "Тестовый товар",
+                    "Price": 100,
+                    "Quantity": 1,
+                    "Amount": 100,
+                    "Tax": "vat20",
+                    "PaymentMethod": "full_prepayment",
+                    "PaymentObject": "commodity"
+                }
+            ]
+        },
+        "Token": "cb5e61e50715dc730def71d5b7da4159a263fd0f2aef2806fe8d7d614ab15f3b"
+    }
+}
+2025-06-30 17:52:41 - Платеж успешно создан
+Data: {
+    "Success": true,
+    "ErrorCode": "0",
+    "TerminalKey": "1653907653899DEMO",
+    "Status": "NEW",
+    "PaymentId": "6613472586",
+    "OrderId": "TEST-1751295161",
+    "Amount": 100,
+    "PaymentURL": "https:\/\/securepayments.tinkoff.ru\/p5Ox81qG"
+}

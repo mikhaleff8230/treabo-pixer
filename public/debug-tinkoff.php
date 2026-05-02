@@ -1,0 +1,190 @@
+<?php
+require __DIR__ . '/../vendor/autoload.php';
+$app = require_once __DIR__ . '/../bootstrap/app.php';
+$app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+
+// Проверка окружения
+if (!app()->environment('production')) {
+    die("Этот скрипт предназначен только для боевого сервера!");
+}
+
+// Проверка наличия необходимых переменных окружения
+$requiredEnvVars = [
+    'TINKOFF_TERMINAL_KEY',
+    'TINKOFF_PASSWORD',
+    'TINKOFF_API_URL'
+];
+
+foreach ($requiredEnvVars as $var) {
+    if (empty(env($var))) {
+        die("Ошибка: Отсутствует переменная окружения {$var}");
+    }
+}
+
+// Генерация CSRF токена
+$csrf_token = csrf_token();
+?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отладка Тинькофф</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .log-container {
+            background: #1e1e1e;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin-bottom: 5px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+        .log-time {
+            color: #888;
+        }
+        .log-error {
+            color: #ff6b6b;
+        }
+        .log-success {
+            color: #51cf66;
+        }
+        .log-info {
+            color: #339af0;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <h1 class="mb-4">Отладка Тинькофф</h1>
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Создать тестовый платеж</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="paymentForm">
+                            <input type="hidden" name="_token" value="<?php echo $csrf_token; ?>">
+                            <div class="mb-3">
+                                <label class="form-label">Сумма (руб.)</label>
+                                <input type="number" class="form-control" name="amount" value="1.00" step="0.01" min="0.01">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Создать платеж</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Проверить статус</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="statusForm">
+                            <input type="hidden" name="_token" value="<?php echo $csrf_token; ?>">
+                            <div class="mb-3">
+                                <label class="form-label">ID платежа</label>
+                                <input type="text" class="form-control" name="payment_id" required>
+                            </div>
+                            <button type="submit" class="btn btn-info">Проверить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Лог операций</h5>
+                <button class="btn btn-sm btn-outline-secondary" onclick="clearLog()">Очистить</button>
+            </div>
+            <div class="card-body">
+                <div id="logContainer" class="log-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const CSRF_TOKEN = '<?php echo $csrf_token; ?>';
+
+        function addLogEntry(message, type = 'info') {
+            const container = document.getElementById('logContainer');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            
+            const time = new Date().toLocaleTimeString();
+            entry.innerHTML = `<span class="log-time">[${time}]</span> ${message}`;
+            
+            container.appendChild(entry);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('logContainer').innerHTML = '';
+        }
+
+        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const amount = e.target.amount.value;
+            
+            try {
+                addLogEntry(`Создание платежа на сумму ${amount} руб.`, 'info');
+                
+                const response = await fetch('/api/debug/tinkoff/create-payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': CSRF_TOKEN
+                    },
+                    body: JSON.stringify({ amount })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    addLogEntry(`Платеж создан. ID: ${data.payment_id}`, 'success');
+                    addLogEntry(`URL для оплаты: ${data.payment_url}`, 'info');
+                } else {
+                    addLogEntry(`Ошибка: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                addLogEntry(`Ошибка: ${error.message}`, 'error');
+            }
+        });
+
+        document.getElementById('statusForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const paymentId = e.target.payment_id.value;
+            
+            try {
+                addLogEntry(`Проверка статуса платежа ${paymentId}`, 'info');
+                
+                const response = await fetch(`/api/debug/tinkoff/check-status/${paymentId}`, {
+                    headers: {
+                        'X-CSRF-TOKEN': CSRF_TOKEN
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    addLogEntry(`Статус платежа: ${data.status}`, 'success');
+                } else {
+                    addLogEntry(`Ошибка: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                addLogEntry(`Ошибка: ${error.message}`, 'error');
+            }
+        });
+    </script>
+</body>
+</html> 

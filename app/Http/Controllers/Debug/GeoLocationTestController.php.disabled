@@ -1,0 +1,2271 @@
+<?php
+
+namespace App\Http\Controllers\Debug;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use App\Services\GeoLocationService;
+use App\Services\YandexGeoService;
+use App\Models\GeoIpCache;
+use Illuminate\Support\Facades\Http;
+
+/**
+ * Тестовый контроллер для проверки всех компонентов геолокации
+ */
+class GeoLocationTestController extends Controller
+{
+    /**
+     * Главная страница тестирования
+     */
+    public function index()
+    {
+        try {
+            // Обработка очистки кэша для IP
+            if (request()->has('clear_cache')) {
+                $ip = request()->input('ip', request()->ip());
+                $clearAll = request()->has('clear_all'); // Очистить весь кэш геолокации
+                
+                if ($clearAll) {
+                    // Очищаем весь кэш геолокации
+                    $deleted = GeoIpCache::truncate();
+                    
+                    // Очищаем все ключи Redis связанные с геолокацией
+                    try {
+                        $redis = Cache::getStore()->getRedis();
+                        if (method_exists($redis, 'keys')) {
+                            $keys = $redis->keys("*geo_location*");
+                            $prefix = config('cache.prefix') . ':';
+                            foreach ($keys as $key) {
+                                $cleanKey = str_replace($prefix, '', $key);
+                                Cache::forget($cleanKey);
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        Log::warning('Ошибка очистки Redis кэша', ['error' => $e->getMessage()]);
+                    }
+                    
+                    $message = "Весь кэш геолокации очищен (БД и Redis)";
+                } else {
+                    // Удаляем из БД для конкретного IP
+                    $deleted = GeoIpCache::where('ip_address', $ip)->delete();
+                    
+                    // Очищаем Redis кэш для всех возможных ключей этого IP
+                    try {
+                        $redis = Cache::getStore()->getRedis();
+                        if (method_exists($redis, 'keys')) {
+                            // Ищем все ключи, содержащие IP
+                            $keys = $redis->keys("*geo_location*{$ip}*");
+                            $prefix = config('cache.prefix') . ':';
+                            foreach ($keys as $key) {
+                                $cleanKey = str_replace($prefix, '', $key);
+                                Cache::forget($cleanKey);
+                            }
+                            
+                            // Также пробуем найти ключи без префикса
+                            $allKeys = $redis->keys("*geo_location*");
+                            foreach ($allKeys as $key) {
+                                if (strpos($key, $ip) !== false) {
+                                    $cleanKey = str_replace($prefix, '', $key);
+                                    Cache::forget($cleanKey);
+                                }
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        Log::warning('Ошибка очистки Redis кэша для IP', ['ip' => $ip, 'error' => $e->getMessage()]);
+                    }
+                    
+                    $message = "Кэш для IP {$ip} очищен (БД и Redis)";
+                }
+                
+                if (request()->expectsJson() || request()->wantsJson()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => $message,
+                        'deleted' => $deleted ?? 0
+                    ]);
+                }
+                
+                return redirect()->route('debug.geolocation-test', ['ip' => $ip])->with('success', $message . ". Обновите страницу для проверки DaData.");
+            }
+        
+        $results = [
+            'timestamp' => now()->toDateTimeString(),
+            'checks' => [],
+            'errors' => [],
+            'warnings' => [],
+            'success' => true,
+        ];
+
+        // 1. Проверка конфигурации
+        $results['checks']['configuration'] = $this->checkConfiguration();
+        
+        // 2. Проверка API ключей
+        $results['checks']['api_keys'] = $this->checkApiKeys();
+        
+        // 3. Проверка DaData (основной сервис)
+        $results['checks']['dadata_test'] = $this->testDaData();
+        
+        // 4. Тест поиска адресов через DaData
+        try {
+            $results['checks']['dadata_address_search'] = $this->testDaDataAddressSearch();
+        } catch (\Throwable $e) {
+            Log::error('DaData address search test error', ['message' => $e->getMessage()]);
+            $results['checks']['dadata_address_search'] = [
+                'name' => 'Тест поиска адресов DaData',
+                'status' => 'error',
+                'errors' => [$e->getMessage()]
+            ];
+        }
+        
+        try {
+            $results['checks']['address_save_load'] = $this->testAddressSaveAndLoad();
+        } catch (\Throwable $e) {
+            Log::error('Address save/load test error', ['message' => $e->getMessage()]);
+            $results['checks']['address_save_load'] = [
+                'name' => 'Тест сохранения и загрузки адреса',
+                'status' => 'error',
+                'errors' => [$e->getMessage()]
+            ];
+        }
+        
+        // 5. Тест логики приоритетов адресов (user_selected vs auto_detected)
+        // Временно отключен для диагностики ошибки 500
+        try {
+            $results['checks']['address_priority_logic'] = $this->testAddressPriorityLogic();
+        } catch (\Throwable $e) {
+            // Логируем ошибку детально
+            Log::error('Address priority logic test FATAL error', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+                'class' => get_class($e)
+            ]);
+            
+            $results['checks']['address_priority_logic'] = [
+                'name' => 'Тест логики приоритетов адресов',
+                'status' => 'error',
+                'errors' => ['Критическая ошибка: ' . $e->getMessage() . ' (файл: ' . basename($e->getFile()) . ':' . $e->getLine() . ')'],
+                'details' => [
+                    'exception' => get_class($e),
+                    'file' => basename($e->getFile()),
+                    'line' => $e->getLine(),
+                    'message' => $e->getMessage()
+                ],
+                'logs' => [
+                    '❌ Критическая ошибка: ' . $e->getMessage(),
+                    '📁 Файл: ' . basename($e->getFile()) . ':' . $e->getLine(),
+                    '🔍 Класс: ' . get_class($e)
+                ]
+            ];
+        }
+        
+        // 4. Проверка базы данных MaxMind
+        $results['checks']['maxmind_database'] = $this->checkMaxMindDatabase();
+        
+        // 5. Тест MaxMind
+        $results['checks']['maxmind_test'] = $this->testMaxMind();
+        
+        // 6. Тест Yandex Locator (опционально)
+        $results['checks']['yandex_locator_test'] = $this->testYandexLocator();
+        
+        // 7. Тест гибридной системы
+        $results['checks']['hybrid_system_test'] = $this->testHybridSystem();
+        
+        // 8. Проверка таблицы geo_ip_cache
+        $results['checks']['database_cache'] = $this->checkDatabaseCache();
+        
+        // 9. Проверка маршрутов
+        $results['checks']['routes'] = $this->checkRoutes();
+        
+        // 10. Проверка кэша Redis
+        $results['checks']['cache'] = $this->checkCache();
+        
+        // Собираем все ошибки и предупреждения
+        foreach ($results['checks'] as $check) {
+            if (isset($check['errors']) && !empty($check['errors'])) {
+                $results['errors'] = array_merge($results['errors'], $check['errors']);
+                $results['success'] = false;
+            }
+            if (isset($check['warnings']) && !empty($check['warnings'])) {
+                $results['warnings'] = array_merge($results['warnings'], $check['warnings']);
+            }
+        }
+
+        // Если запрос ожидает JSON, возвращаем JSON
+        if (request()->expectsJson() || request()->wantsJson()) {
+            return response()->json($results, $results['success'] ? 200 : 500);
+        }
+
+        // Иначе возвращаем HTML страницу
+        return $this->renderHtml($results);
+        
+        } catch (\Throwable $e) {
+            Log::error('GeoLocationTestController: Fatal error', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            // Возвращаем ошибку в формате JSON или HTML
+            if (request()->expectsJson() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Fatal error: ' . $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine()
+                ], 500);
+            }
+            
+            // HTML ошибка
+            return response('
+                <!DOCTYPE html>
+                <html>
+                <head><title>Ошибка теста геолокации</title></head>
+                <body style="font-family: Arial; padding: 20px;">
+                    <h1>❌ Ошибка 500</h1>
+                    <p><strong>Сообщение:</strong> ' . htmlspecialchars($e->getMessage()) . '</p>
+                    <p><strong>Файл:</strong> ' . htmlspecialchars($e->getFile()) . '</p>
+                    <p><strong>Строка:</strong> ' . $e->getLine() . '</p>
+                    <pre style="background: #f5f5f5; padding: 10px; overflow-x: auto;">' . htmlspecialchars($e->getTraceAsString()) . '</pre>
+                    <p><a href="' . route('debug.geolocation-test') . '">← Вернуться к тестам</a></p>
+                </body>
+                </html>
+            ', 500);
+        }
+    }
+
+    /**
+     * Проверка конфигурации
+     */
+    private function checkConfiguration()
+    {
+        $result = [
+            'name' => 'Конфигурация геолокации',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+        ];
+
+        try {
+            $result['details']['dadata'] = [
+                'api_key' => config('services.dadata.api_key') ? 'настроен' : 'не настроен',
+                'secret_key' => config('services.dadata.secret_key') ? 'настроен' : 'не настроен',
+                'api_url' => config('services.dadata.api_url'),
+                'note' => 'основной сервис'
+            ];
+            
+            $result['details']['maxmind'] = [
+                'account_id' => config('services.maxmind_database.account_id') ? 'настроен' : 'не настроен',
+                'license_key' => config('services.maxmind_database.license_key') ? 'настроен' : 'не настроен',
+                'note' => 'fallback'
+            ];
+            
+            $result['details']['yandex_locator'] = [
+                'api_key' => config('services.yandex_locator.api_key') ? 'настроен' : 'не настроен',
+                'api_url' => config('services.yandex_locator.api_url'),
+                'enabled' => config('services.yandex_locator.enabled', false),
+                'note' => 'опционально (отключен)'
+            ];
+            
+            $result['details']['yandex_geocoder'] = [
+                'api_key' => config('services.yandex_geocoder.api_key') ? 'настроен' : 'не настроен',
+                'api_url' => config('services.yandex_geocoder.api_url'),
+                'note' => 'опционально (отключен)'
+            ];
+
+            // Проверяем env напрямую для диагностики
+            $dadataApiKey = env('DADATA_API_KEY');
+            $dadataSecretKey = env('DADATA_SECRET_KEY');
+            
+            $result['details']['env_check'] = [
+                'DADATA_API_KEY_env' => $dadataApiKey ? 'настроен (' . substr($dadataApiKey, 0, 10) . '...)' : 'не настроен',
+                'DADATA_SECRET_KEY_env' => $dadataSecretKey ? 'настроен' : 'не настроен',
+            ];
+            
+            if (!$dadataApiKey || !$dadataSecretKey) {
+                $result['status'] = 'error';
+                $result['errors'][] = 'DaData API ключи не настроены в .env (DADATA_API_KEY, DADATA_SECRET_KEY)';
+            }
+
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = 'Ошибка при проверке конфигурации: ' . $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Тест DaData (основной сервис)
+     */
+    private function testDaData()
+    {
+        $result = [
+            'name' => 'Тест DaData (основной сервис)',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+        ];
+
+        try {
+            $testIp = request()->query('ip', request()->ip());
+            if (in_array($testIp, ['127.0.0.1', '::1'])) {
+                $testIp = '95.24.18.3';
+            }
+            
+            $result['details']['test_ip'] = $testIp;
+            
+            $apiKey = config('services.dadata.api_key');
+            $secretKey = config('services.dadata.secret_key');
+            
+            $result['details']['configured'] = !empty($apiKey) && !empty($secretKey);
+            $result['details']['api_key_exists'] = !empty($apiKey);
+            $result['details']['secret_key_exists'] = !empty($secretKey);
+            
+            if ($apiKey && $secretKey) {
+                // Проверяем, есть ли IP в кэше БД
+                $cachedLocation = GeoIpCache::findByIp($testIp);
+                $result['details']['cached_in_db'] = $cachedLocation !== null;
+                if ($cachedLocation) {
+                    $result['details']['cache_info'] = [
+                        'source' => $cachedLocation->source,
+                        'request_count' => $cachedLocation->request_count,
+                        'last_used_at' => $cachedLocation->last_used_at?->toDateTimeString(),
+                        'cached_city' => $cachedLocation->city
+                    ];
+                }
+                
+                $geoService = app(GeoLocationService::class);
+                $location = $geoService->getLocationByIp($testIp);
+                
+                // Проверяем, был ли результат из кэша
+                $isFromCache = strpos($location['source'] ?? '', '_cached') !== false;
+                $result['details']['from_cache'] = $isFromCache;
+                
+                if ($location && isset($location['city'])) {
+                    $result['details']['working'] = true;
+                    $result['details']['city'] = $location['city'] ?? null;
+                    $result['details']['country'] = $location['country'] ?? null;
+                    $result['details']['lat'] = $location['lat'] ?? null;
+                    $result['details']['lon'] = $location['lon'] ?? null;
+                    $result['details']['source'] = $location['source'] ?? null;
+                    
+                    if ($isFromCache) {
+                        $result['details']['note'] = 'Результат получен из кэша БД (экономия лимита DaData)';
+                    } elseif ($location['source'] === 'dadata') {
+                        $result['details']['note'] = 'Результат получен от DaData API и сохранен в кэш БД';
+                    }
+                } else {
+                    $result['status'] = 'warning';
+                    $result['warnings'][] = 'DaData вернул данные, но источник не DaData (используется fallback)';
+                    $result['details']['actual_source'] = $location['source'] ?? 'unknown';
+                }
+            } else {
+                $result['status'] = 'warning';
+                $result['warnings'][] = 'DaData API ключи не настроены в .env';
+            }
+
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = 'Ошибка при тестировании DaData: ' . $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Тест поиска адресов через DaData API
+     */
+    private function testDaDataAddressSearch()
+    {
+        $result = [
+            'name' => 'Тест поиска адресов DaData',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+        ];
+
+        try {
+            $testQuery = request()->query('address_query', 'Москва, Тверская');
+            
+            $apiKey = config('services.dadata.api_key');
+            $secretKey = config('services.dadata.secret_key');
+            
+            $result['details']['configured'] = !empty($apiKey) && !empty($secretKey);
+            $result['details']['test_query'] = $testQuery;
+            
+            // Детальная диагностика (используем прямые HTTP запросы, SDK не требуется)
+            $result['details']['has_api_key'] = !empty($apiKey);
+            $result['details']['has_secret_key'] = !empty($secretKey);
+            $result['details']['api_key_length'] = $apiKey ? strlen($apiKey) : 0;
+            $result['details']['secret_key_length'] = $secretKey ? strlen($secretKey) : 0;
+            
+            if (!$apiKey || !$secretKey) {
+                $result['status'] = 'error';
+                $result['errors'][] = 'DaData API ключи не настроены в .env (DADATA_API_KEY, DADATA_SECRET_KEY)';
+            } else {
+                try {
+                    $geoService = app(GeoLocationService::class);
+                    $searchResult = $geoService->searchAddresses($testQuery, 5);
+                    
+                    if (isset($searchResult['error'])) {
+                        $result['status'] = 'error';
+                        $result['errors'][] = $searchResult['error'];
+                        $result['details']['error_details'] = $searchResult;
+                    } else {
+                        $addresses = $searchResult['addresses'] ?? [];
+                        $result['details']['working'] = true;
+                        $result['details']['found'] = count($addresses);
+                        $result['details']['addresses'] = array_slice($addresses, 0, 3); // Первые 3 адреса для примера
+                        
+                        if (count($addresses) === 0) {
+                            $result['status'] = 'warning';
+                            $result['warnings'][] = 'DaData не вернул результатов для запроса: ' . $testQuery;
+                        }
+                    }
+                } catch (\Exception $e) {
+                    $result['status'] = 'error';
+                    $result['errors'][] = 'Ошибка при вызове searchAddresses: ' . $e->getMessage();
+                    $result['details']['exception'] = [
+                        'message' => $e->getMessage(),
+                        'file' => $e->getFile(),
+                        'line' => $e->getLine()
+                    ];
+                }
+            }
+
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = 'Ошибка при тестировании поиска адресов: ' . $e->getMessage();
+            Log::error('DaData address search test error', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Тест сохранения и загрузки адреса пользователя
+     */
+    private function testAddressSaveAndLoad()
+    {
+        $result = [
+            'name' => 'Тест сохранения и загрузки адреса',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+            'logs' => [],
+        ];
+
+        try {
+            // Этап 0: Проверка авторизации
+            $result['logs'][] = '🔍 Этап 0: Проверка авторизации пользователя';
+            
+            $user = null;
+            $authMethods = [];
+            $request = request();
+            
+            // Проверяем наличие токена в запросе
+            $bearerToken = $request->bearerToken();
+            $queryToken = $request->query('token');
+            
+            // Пробуем получить токен из cookies (автоматически)
+            $cookieToken = null;
+            $cookieNames = ['authToken', 'auth_token', 'token', 'sanctum_token'];
+            foreach ($cookieNames as $cookieName) {
+                $cookieValue = $request->cookie($cookieName);
+                if ($cookieValue) {
+                    // Токен может быть в формате JSON или просто строка
+                    try {
+                        $decoded = json_decode($cookieValue, true);
+                        if (is_array($decoded) && isset($decoded['token'])) {
+                            $cookieToken = $decoded['token'];
+                        } else {
+                            $cookieToken = $cookieValue;
+                        }
+                        $result['logs'][] = '🍪 Токен найден в cookie: ' . $cookieName;
+                        break;
+                    } catch (\Exception $e) {
+                        $cookieToken = $cookieValue;
+                        $result['logs'][] = '🍪 Токен найден в cookie (raw): ' . $cookieName;
+                        break;
+                    }
+                }
+            }
+            
+            $hasToken = !empty($bearerToken) || !empty($queryToken) || !empty($cookieToken);
+            
+            $result['logs'][] = '🔑 Проверка токенов: bearer=' . ($bearerToken ? 'есть' : 'нет') . ', query=' . ($queryToken ? 'есть' : 'нет') . ', cookie=' . ($cookieToken ? 'есть' : 'нет');
+            
+            // Приоритет: query > cookie > bearer
+            $tokenToUse = $queryToken ?: $cookieToken ?: $bearerToken;
+            
+            // Если есть токен, пробуем найти пользователя по нему
+            if ($tokenToUse && !$user) {
+                try {
+                    $token = \Laravel\Sanctum\PersonalAccessToken::findToken($tokenToUse);
+                    if ($token && $token->tokenable) {
+                        $user = $token->tokenable;
+                        $authMethods[] = $queryToken ? 'query_token' : ($cookieToken ? 'cookie_token' : 'bearer_token');
+                        $result['logs'][] = '✅ Авторизация через токен (' . ($queryToken ? 'query' : ($cookieToken ? 'cookie' : 'bearer')) . '): user_id=' . $user->id;
+                    }
+                } catch (\Exception $e) {
+                    $result['logs'][] = '❌ Ошибка проверки токена: ' . $e->getMessage();
+                }
+            }
+            
+            // Проверяем все способы авторизации
+            if (!$user) {
+                try {
+                    $user = auth('sanctum')->user();
+                    if ($user) {
+                        $authMethods[] = 'sanctum';
+                        $result['logs'][] = '✅ Авторизация через sanctum: user_id=' . $user->id;
+                    } else {
+                        $result['logs'][] = 'ℹ️ auth(sanctum)->user() вернул null';
+                    }
+                } catch (\Exception $e) {
+                    $result['logs'][] = '❌ Ошибка проверки sanctum: ' . $e->getMessage();
+                }
+            }
+            
+            if (!$user) {
+                try {
+                    $user = auth()->user();
+                    if ($user) {
+                        $authMethods[] = 'default';
+                        $result['logs'][] = '✅ Авторизация через default: user_id=' . $user->id;
+                    } else {
+                        $result['logs'][] = 'ℹ️ auth()->user() вернул null';
+                    }
+                } catch (\Exception $e) {
+                    $result['logs'][] = '❌ Ошибка проверки default: ' . $e->getMessage();
+                }
+            }
+            
+            if (!$user) {
+                try {
+                    $user = auth('api')->user();
+                    if ($user) {
+                        $authMethods[] = 'api';
+                        $result['logs'][] = '✅ Авторизация через api: user_id=' . $user->id;
+                    } else {
+                        $result['logs'][] = 'ℹ️ auth(api)->user() вернул null';
+                    }
+                } catch (\Exception $e) {
+                    $result['logs'][] = '❌ Ошибка проверки api: ' . $e->getMessage();
+                }
+            }
+            
+            if (!$user) {
+                try {
+                    $user = auth('web')->user();
+                    if ($user) {
+                        $authMethods[] = 'web';
+                        $result['logs'][] = '✅ Авторизация через web: user_id=' . $user->id;
+                    } else {
+                        $result['logs'][] = 'ℹ️ auth(web)->user() вернул null';
+                    }
+                } catch (\Exception $e) {
+                    $result['logs'][] = '❌ Ошибка проверки web: ' . $e->getMessage();
+                }
+            }
+            
+            // Проверяем bearer token (если еще не нашли пользователя)
+            if (!$user && $bearerToken && $bearerToken !== $tokenToUse) {
+                try {
+                    $token = \Laravel\Sanctum\PersonalAccessToken::findToken($bearerToken);
+                    if ($token && $token->tokenable) {
+                        $user = $token->tokenable;
+                        $authMethods[] = 'bearer_token';
+                        $result['logs'][] = '✅ Авторизация через bearer token: user_id=' . $user->id;
+                    }
+                } catch (\Exception $e) {
+                    $result['logs'][] = '❌ Ошибка проверки bearer token: ' . $e->getMessage();
+                }
+            }
+            
+            // Проверяем сессию
+            if (!$user) {
+                try {
+                    $sessionUserId = session('user_id');
+                    if ($sessionUserId) {
+                        $user = \Marvel\Database\Models\User::find($sessionUserId);
+                        if ($user) {
+                            $authMethods[] = 'session';
+                            $result['logs'][] = '✅ Авторизация через сессию: user_id=' . $user->id;
+                        }
+                    }
+                } catch (\Exception $e) {
+                    $result['logs'][] = '❌ Ошибка проверки сессии: ' . $e->getMessage();
+                }
+            }
+            
+            // Если пользователь не найден, пробуем создать или использовать тестового пользователя
+            if (!$user) {
+                try {
+                    // Ищем любого активного пользователя для тестирования
+                    $testUser = \Marvel\Database\Models\User::where('is_active', true)
+                        ->orderBy('id', 'desc')
+                        ->first();
+                    
+                    if ($testUser) {
+                        $user = $testUser;
+                        $authMethods[] = 'test_user';
+                        $result['logs'][] = '⚠️ Используется тестовый пользователь для демонстрации: user_id=' . $user->id . ', email=' . $user->email;
+                        $result['warnings'][] = 'ВНИМАНИЕ: Используется тестовый пользователь для демонстрации. Для реального тестирования авторизуйтесь через веб-интерфейс.';
+                    }
+                } catch (\Exception $e) {
+                    $result['logs'][] = '❌ Ошибка поиска тестового пользователя: ' . $e->getMessage();
+                }
+            }
+            
+            if (!$user) {
+                $result['status'] = 'warning';
+                $result['warnings'][] = 'Пользователь не авторизован. Тест сохранения адреса требует авторизации.';
+                $result['warnings'][] = 'Авторизуйтесь через веб-интерфейс перед открытием этой страницы.';
+                $result['details']['authenticated'] = false;
+                $result['details']['auth_checks'] = [
+                    'has_bearer_token' => !empty($bearerToken),
+                    'has_query_token' => !empty($queryToken),
+                    'has_cookie_token' => !empty($cookieToken),
+                    'session_id' => session()->getId(),
+                    'session_user_id' => session('user_id'),
+                ];
+                $result['logs'][] = '⚠️ Пользователь не авторизован ни одним способом';
+                $result['logs'][] = '💡 Подсказка: Авторизуйтесь через веб-интерфейс перед открытием этой страницы';
+                $result['logs'][] = '💡 Токен будет автоматически найден из cookies браузера';
+                return $result;
+            }
+            
+            $result['details']['authenticated'] = true;
+            $result['details']['user_id'] = $user->id;
+            $result['details']['user_email'] = $user->email;
+            $result['details']['auth_methods'] = $authMethods;
+            $result['logs'][] = '✅ Пользователь авторизован: ID=' . $user->id . ', Email=' . $user->email;
+            
+            // Проверяем наличие токена
+            $token = null;
+            $tokenString = null;
+            $tokenSource = 'none';
+            
+            // Приоритет: query > cookie > bearer > user tokens > create new
+            if ($queryToken) {
+                try {
+                    $token = \Laravel\Sanctum\PersonalAccessToken::findToken($queryToken);
+                    if ($token) {
+                        $tokenString = $queryToken;
+                        $tokenSource = 'query';
+                        $result['logs'][] = '✅ Используется токен из query параметра';
+                    }
+                } catch (\Exception $e) {
+                    $result['logs'][] = '⚠️ Ошибка проверки query token: ' . $e->getMessage();
+                }
+            }
+            
+            if (!$token && $cookieToken) {
+                try {
+                    $token = \Laravel\Sanctum\PersonalAccessToken::findToken($cookieToken);
+                    if ($token) {
+                        $tokenString = $cookieToken;
+                        $tokenSource = 'cookie';
+                        $result['logs'][] = '✅ Используется токен из cookie (автоматически найден)';
+                    }
+                } catch (\Exception $e) {
+                    $result['logs'][] = '⚠️ Ошибка проверки cookie token: ' . $e->getMessage();
+                }
+            }
+            
+            if (!$token && $bearerToken) {
+                try {
+                    $token = \Laravel\Sanctum\PersonalAccessToken::findToken($bearerToken);
+                    if ($token) {
+                        $tokenString = $bearerToken;
+                        $tokenSource = 'bearer';
+                        $result['logs'][] = '✅ Используется токен из bearer заголовка';
+                    }
+                } catch (\Exception $e) {
+                    $result['logs'][] = '⚠️ Ошибка проверки bearer token: ' . $e->getMessage();
+                }
+            }
+            
+            // Если токен не найден, ищем у пользователя или создаем новый
+            if (!$token) {
+                $token = $user->tokens()->first();
+                if ($token) {
+                    $tokenString = $token->token;
+                    $tokenSource = 'user_tokens';
+                    $result['logs'][] = '✅ Используется существующий токен пользователя';
+                } else {
+                    // Создаем новый токен для тестирования
+                    try {
+                        $newToken = $user->createToken('test-token', ['*']);
+                        $tokenString = $newToken->plainTextToken;
+                        $token = \Laravel\Sanctum\PersonalAccessToken::findToken($tokenString);
+                        $tokenSource = 'created';
+                        $result['logs'][] = '✅ Создан новый токен для тестирования';
+                    } catch (\Exception $e) {
+                        $result['logs'][] = '⚠️ Ошибка создания токена: ' . $e->getMessage();
+                    }
+                }
+            }
+            
+            $hasToken = $token !== null && $tokenString !== null;
+            $result['details']['has_token'] = $hasToken;
+            $result['details']['token_source'] = $tokenSource;
+            $result['logs'][] = $hasToken ? '✅ Токен найден: ' . substr($tokenString, 0, 20) . '... (источник: ' . $tokenSource . ')' : '⚠️ Токен не найден';
+            
+            // Тестовые данные адреса
+            $testAddress = [
+                'city' => 'Москва',
+                'region' => 'Московская область',
+                'region_with_type' => 'Московская обл',
+                'country' => 'Россия',
+                'street' => 'Тверская',
+                'street_with_type' => 'ул Тверская',
+                'house' => '10',
+                'flat' => '5',
+                'postal_code' => '101000',
+                'full_address' => 'г Москва, ул Тверская, д 10, кв 5',
+                'address' => 'г Москва, ул Тверская, д 10',
+                'lat' => 55.7558,
+                'lon' => 37.6173,
+                'kladr_id' => '7700000000000',
+                'fias_id' => '0c5b2444-70a0-4932-980c-b4dc0d3f02b5'
+            ];
+            
+            $result['logs'][] = '📝 Тестовый адрес: ' . $testAddress['full_address'];
+            
+            // Шаг 1: Проверка существующих адресов в БД ДО сохранения
+            $result['logs'][] = '🔍 Этап 1: Проверка существующих адресов в БД (до сохранения)';
+            try {
+                $existingAddresses = \Marvel\Database\Models\UserAddress::where('user_id', $user->id)
+                    ->where('type', 'user_selected')
+                    ->where('source', 'user_selected')
+                    ->get();
+                
+                $result['details']['before_save'] = [
+                    'count' => $existingAddresses->count(),
+                    'addresses' => $existingAddresses->map(function($addr) {
+                        return [
+                            'id' => $addr->id,
+                            'city' => $addr->city,
+                            'full_address' => $addr->full_address,
+                            'created_at' => $addr->created_at?->toDateTimeString(),
+                            'updated_at' => $addr->updated_at?->toDateTimeString(),
+                        ];
+                    })->toArray()
+                ];
+                
+                $result['logs'][] = '📊 Найдено существующих адресов: ' . $existingAddresses->count();
+            } catch (\Exception $e) {
+                $result['logs'][] = '❌ Ошибка проверки существующих адресов: ' . $e->getMessage();
+            }
+            
+            // Шаг 2: Сохранение адреса через API
+            $result['logs'][] = '💾 Этап 2: Сохранение адреса через API';
+            try {
+                $headers = [
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                ];
+                
+                if ($hasToken && $tokenString) {
+                    $headers['Authorization'] = 'Bearer ' . $tokenString;
+                    $result['logs'][] = '🔑 Добавлен Bearer токен в заголовки';
+                } else {
+                    $result['logs'][] = '⚠️ Токен не найден, запрос без авторизации';
+                }
+                
+                $saveUrl = url('/api/geoip/address/save');
+                $result['logs'][] = '📤 Отправка POST запроса на: ' . $saveUrl;
+                $result['logs'][] = '📦 Данные: ' . json_encode($testAddress, JSON_UNESCAPED_UNICODE);
+                
+                $saveResponse = Http::withHeaders($headers)->post($saveUrl, $testAddress);
+                
+                $saveData = $saveResponse->json();
+                $result['logs'][] = '📥 Ответ от сервера: HTTP ' . $saveResponse->status();
+                $result['logs'][] = '📄 Тело ответа: ' . json_encode($saveData, JSON_UNESCAPED_UNICODE);
+                
+                $result['details']['save'] = [
+                    'status_code' => $saveResponse->status(),
+                    'success' => $saveData['success'] ?? false,
+                    'message' => $saveData['message'] ?? '',
+                    'saved_to_database' => $saveData['saved_to_database'] ?? false,
+                    'user_address_id' => $saveData['user_address_id'] ?? null,
+                    'response' => $saveData,
+                ];
+                
+                if ($saveResponse->status() !== 200 || !($saveData['success'] ?? false)) {
+                    $result['status'] = 'error';
+                    $errorMsg = 'Ошибка сохранения адреса: ' . ($saveData['message'] ?? 'Неизвестная ошибка');
+                    $result['errors'][] = $errorMsg;
+                    $result['logs'][] = '❌ ' . $errorMsg;
+                } else {
+                    $result['logs'][] = '✅ Адрес успешно сохранен через API';
+                    if ($saveData['saved_to_database'] ?? false) {
+                        $result['logs'][] = '✅ Адрес сохранен в базу данных (ID: ' . ($saveData['user_address_id'] ?? 'неизвестно') . ')';
+                    } else {
+                        $result['logs'][] = '⚠️ Адрес сохранен только в кэш, не в БД';
+                    }
+                }
+            } catch (\Exception $e) {
+                $result['status'] = 'error';
+                $errorMsg = 'Ошибка при сохранении адреса: ' . $e->getMessage();
+                $result['errors'][] = $errorMsg;
+                $result['logs'][] = '❌ ' . $errorMsg;
+                $result['logs'][] = '📚 Trace: ' . $e->getTraceAsString();
+            }
+            
+            // Шаг 3: Проверка в БД напрямую ПОСЛЕ сохранения
+            $result['logs'][] = '🔍 Этап 3: Проверка в БД напрямую (после сохранения)';
+            try {
+                $userAddress = \Marvel\Database\Models\UserAddress::where('user_id', $user->id)
+                    ->where('type', 'user_selected')
+                    ->where('source', 'user_selected')
+                    ->where('is_active', true)
+                    ->orderBy('updated_at', 'desc')
+                    ->first();
+                
+                $result['details']['database_check'] = [
+                    'found' => $userAddress !== null,
+                    'address_id' => $userAddress?->id,
+                    'city' => $userAddress?->city,
+                    'region' => $userAddress?->region,
+                    'full_address' => $userAddress?->full_address,
+                    'street' => $userAddress?->street,
+                    'house' => $userAddress?->house,
+                    'is_default' => $userAddress?->is_default,
+                    'is_active' => $userAddress?->is_active,
+                    'created_at' => $userAddress?->created_at?->toDateTimeString(),
+                    'updated_at' => $userAddress?->updated_at?->toDateTimeString(),
+                ];
+                
+                if ($userAddress) {
+                    $result['logs'][] = '✅ Адрес найден в БД: ID=' . $userAddress->id . ', Город=' . $userAddress->city;
+                    $result['logs'][] = '📋 Полный адрес: ' . $userAddress->full_address;
+                } else {
+                    $result['status'] = 'error';
+                    $errorMsg = 'Адрес не найден в базе данных после сохранения';
+                    $result['errors'][] = $errorMsg;
+                    $result['logs'][] = '❌ ' . $errorMsg;
+                    
+                    // Проверяем все адреса пользователя
+                    $allAddresses = \Marvel\Database\Models\UserAddress::where('user_id', $user->id)->get();
+                    $result['logs'][] = '📊 Всего адресов пользователя в БД: ' . $allAddresses->count();
+                    foreach ($allAddresses as $addr) {
+                        $result['logs'][] = '  - ID=' . $addr->id . ', type=' . $addr->type . ', source=' . $addr->source . ', city=' . $addr->city;
+                    }
+                }
+            } catch (\Exception $e) {
+                $result['status'] = 'error';
+                $errorMsg = 'Ошибка при проверке БД: ' . $e->getMessage();
+                $result['errors'][] = $errorMsg;
+                $result['logs'][] = '❌ ' . $errorMsg;
+            }
+            
+            // Шаг 4: Загрузка адреса через API
+            $result['logs'][] = '📥 Этап 4: Загрузка адреса через API';
+            try {
+                $loadHeaders = [
+                    'Accept' => 'application/json',
+                ];
+                
+                if ($hasToken && $tokenString) {
+                    $loadHeaders['Authorization'] = 'Bearer ' . $tokenString;
+                }
+                
+                $loadUrl = url('/api/geoip/address/saved');
+                $result['logs'][] = '📤 Отправка GET запроса на: ' . $loadUrl;
+                
+                $loadResponse = Http::withHeaders($loadHeaders)->get($loadUrl);
+                
+                $loadData = $loadResponse->json();
+                $result['logs'][] = '📥 Ответ от сервера: HTTP ' . $loadResponse->status();
+                $result['logs'][] = '📄 Тело ответа: ' . json_encode($loadData, JSON_UNESCAPED_UNICODE);
+                
+                $result['details']['load'] = [
+                    'status_code' => $loadResponse->status(),
+                    'address_found' => isset($loadData['address']) && $loadData['address'] !== null,
+                    'address' => $loadData['address'] ?? null,
+                ];
+                
+                if ($loadResponse->status() === 404 || !isset($loadData['address']) || $loadData['address'] === null) {
+                    $result['status'] = 'error';
+                    $errorMsg = 'Адрес не найден при загрузке через API (404 или null)';
+                    $result['errors'][] = $errorMsg;
+                    $result['logs'][] = '❌ ' . $errorMsg;
+                } else {
+                    $result['logs'][] = '✅ Адрес успешно загружен через API';
+                    $loadedAddress = $loadData['address'];
+                    $result['logs'][] = '📋 Загруженный адрес: ' . ($loadedAddress['full_address'] ?? $loadedAddress['city'] ?? 'неизвестно');
+                    
+                    // Проверяем, что загруженный адрес соответствует сохраненному
+                    if (isset($loadedAddress['city']) && $loadedAddress['city'] !== $testAddress['city']) {
+                        $result['status'] = 'warning';
+                        $warningMsg = 'Загруженный адрес не соответствует сохраненному (город: ' . $loadedAddress['city'] . ' vs ' . $testAddress['city'] . ')';
+                        $result['warnings'][] = $warningMsg;
+                        $result['logs'][] = '⚠️ ' . $warningMsg;
+                    } else {
+                        $result['logs'][] = '✅ Загруженный адрес соответствует сохраненному';
+                    }
+                }
+            } catch (\Exception $e) {
+                $result['status'] = 'error';
+                $errorMsg = 'Ошибка при загрузке адреса: ' . $e->getMessage();
+                $result['errors'][] = $errorMsg;
+                $result['logs'][] = '❌ ' . $errorMsg;
+            }
+            
+            // Шаг 5: Проверка кэша
+            $result['logs'][] = '💾 Этап 5: Проверка кэша';
+            try {
+                $cacheKey = "user_address_{$user->id}";
+                $cachedAddress = Cache::get($cacheKey);
+                
+                $result['details']['cache_check'] = [
+                    'cache_key' => $cacheKey,
+                    'found' => $cachedAddress !== null,
+                    'city' => $cachedAddress['city'] ?? null,
+                    'full_address' => $cachedAddress['full_address'] ?? null,
+                ];
+                
+                if ($cachedAddress) {
+                    $result['logs'][] = '✅ Адрес найден в кэше: ' . ($cachedAddress['full_address'] ?? $cachedAddress['city'] ?? 'неизвестно');
+                } else {
+                    $result['logs'][] = '⚠️ Адрес не найден в кэше';
+                }
+            } catch (\Exception $e) {
+                $result['warnings'][] = 'Ошибка при проверке кэша: ' . $e->getMessage();
+                $result['logs'][] = '⚠️ Ошибка проверки кэша: ' . $e->getMessage();
+            }
+            
+            // Шаг 6: Получение последних логов Laravel
+            $result['logs'][] = '📋 Этап 6: Получение последних логов Laravel';
+            try {
+                $logFile = storage_path('logs/laravel.log');
+                if (file_exists($logFile)) {
+                    $logs = file_get_contents($logFile);
+                    $lines = explode("\n", $logs);
+                    $recentLogs = array_slice($lines, -50); // Последние 50 строк
+                    $addressLogs = array_filter($recentLogs, function($line) {
+                        return strpos($line, 'address') !== false || 
+                               strpos($line, 'Address') !== false ||
+                               strpos($line, 'API:') !== false;
+                    });
+                    
+                    $result['details']['recent_logs'] = array_slice($addressLogs, -20); // Последние 20 строк с адресами
+                    $result['logs'][] = '✅ Найдено ' . count($result['details']['recent_logs']) . ' строк логов, связанных с адресами';
+                } else {
+                    $result['logs'][] = '⚠️ Файл логов не найден: ' . $logFile;
+                }
+            } catch (\Exception $e) {
+                $result['logs'][] = '⚠️ Ошибка чтения логов: ' . $e->getMessage();
+            }
+            
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $errorMsg = 'Ошибка при тестировании сохранения/загрузки адреса: ' . $e->getMessage();
+            $result['errors'][] = $errorMsg;
+            $result['logs'][] = '❌ Критическая ошибка: ' . $errorMsg;
+            $result['logs'][] = '📚 Trace: ' . $e->getTraceAsString();
+            
+            Log::error('Address save/load test error', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Тест логики приоритетов адресов (user_selected vs auto_detected)
+     */
+    private function testAddressPriorityLogic()
+    {
+        $result = [
+            'name' => 'Тест логики приоритетов адресов',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+            'logs' => [],
+        ];
+
+        try {
+            // Проверяем, что таблица существует
+            if (!Schema::hasTable('user_addresses')) {
+                $result['status'] = 'error';
+                $result['errors'][] = 'Таблица user_addresses не существует';
+                $result['logs'][] = '❌ Таблица user_addresses не существует';
+                return $result;
+            }
+            // Пробуем получить пользователя
+            $user = null;
+            try {
+                $user = auth('sanctum')->user();
+            } catch (\Exception $e) {}
+            
+            if (!$user) {
+                try {
+                    $user = auth()->user();
+                } catch (\Exception $e) {}
+            }
+            
+            if (!$user) {
+                try {
+                    $user = auth('api')->user();
+                } catch (\Exception $e) {}
+            }
+            
+            if (!$user) {
+                try {
+                    $user = auth('web')->user();
+                } catch (\Exception $e) {}
+            }
+            
+            if (!$user) {
+                // Ищем любого активного пользователя для тестирования
+                try {
+                    $user = \Marvel\Database\Models\User::where('is_active', true)
+                        ->orderBy('id', 'desc')
+                        ->first();
+                } catch (\Exception $e) {}
+            }
+
+            if (!$user) {
+                $result['status'] = 'warning';
+                $result['warnings'][] = 'Пользователь не найден. Тест требует авторизации или наличия пользователей в БД.';
+                $result['logs'][] = '⚠️ Пользователь не найден для тестирования';
+                return $result;
+            }
+
+            $result['details']['user_id'] = $user->id;
+            $result['details']['user_email'] = $user->email;
+            $result['logs'][] = '✅ Используется пользователь: ID=' . $user->id . ', Email=' . $user->email;
+
+            // Шаг 1: Проверка структуры таблицы user_addresses
+            $result['logs'][] = '🔍 Шаг 1: Проверка структуры таблицы user_addresses';
+            try {
+                // Проверяем, существует ли таблица
+                if (!Schema::hasTable('user_addresses')) {
+                    $result['status'] = 'error';
+                    $result['errors'][] = 'Таблица user_addresses не существует';
+                    $result['logs'][] = '❌ Таблица user_addresses не существует';
+                    return $result;
+                }
+                
+                $columns = Schema::getColumnListing('user_addresses');
+                $hasType = in_array('type', $columns);
+                $hasSource = in_array('source', $columns);
+                
+                $result['details']['table_structure'] = [
+                    'has_type_column' => $hasType,
+                    'has_source_column' => $hasSource,
+                    'all_columns' => $columns
+                ];
+                
+                if (!$hasType || !$hasSource) {
+                    $result['status'] = 'error';
+                    $result['errors'][] = 'Таблица user_addresses не содержит необходимые поля: type=' . ($hasType ? 'есть' : 'НЕТ') . ', source=' . ($hasSource ? 'есть' : 'НЕТ');
+                    $result['logs'][] = '❌ Отсутствуют необходимые поля в таблице';
+                    return $result;
+                }
+                
+                $result['logs'][] = '✅ Поля type и source существуют в таблице';
+            } catch (\Exception $e) {
+                $result['status'] = 'error';
+                $result['errors'][] = 'Ошибка проверки структуры таблицы: ' . $e->getMessage();
+                $result['logs'][] = '❌ Ошибка: ' . $e->getMessage();
+                return $result;
+            }
+
+            // Шаг 2: Создание тестового auto_detected адреса
+            $result['logs'][] = '📝 Шаг 2: Создание тестового auto_detected адреса';
+            try {
+                $autoAddressData = [
+                    'user_id' => $user->id,
+                    'type' => 'auto_detected',
+                    'source' => 'auto_detected',
+                    'title' => 'Тестовый автоопределенный адрес',
+                    'city' => 'Санкт-Петербург',
+                    'address' => 'Санкт-Петербург',
+                    'latitude' => 59.9343,
+                    'longitude' => 30.3351,
+                    'is_default' => false,
+                    'is_active' => true
+                ];
+                
+                // Добавляем дополнительные поля (если они существуют в таблице)
+                try {
+                    $autoAddressData['region'] = 'Ленинградская область';
+                    $autoAddressData['region_with_type'] = 'Ленинградская обл';
+                    $autoAddressData['country'] = 'Россия';
+                    $autoAddressData['full_address'] = 'г Санкт-Петербург, Ленинградская обл';
+                } catch (\Exception $e) {
+                    // Игнорируем ошибки добавления дополнительных полей
+                }
+                
+                $autoAddress = \Marvel\Database\Models\UserAddress::updateOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'type' => 'auto_detected',
+                        'source' => 'auto_detected'
+                    ],
+                    $autoAddressData
+                );
+                
+                $result['details']['auto_detected_address'] = [
+                    'id' => $autoAddress->id ?? null,
+                    'type' => $autoAddress->type ?? null,
+                    'source' => $autoAddress->source ?? null,
+                    'city' => $autoAddress->city ?? null,
+                    'created' => isset($autoAddress->wasRecentlyCreated) ? $autoAddress->wasRecentlyCreated : false
+                ];
+                
+                $result['logs'][] = '✅ Auto_detected адрес создан/найден: ID=' . ($autoAddress->id ?? 'неизвестно') . ', type=' . ($autoAddress->type ?? 'неизвестно') . ', source=' . ($autoAddress->source ?? 'неизвестно');
+            } catch (\Exception $e) {
+                $result['status'] = 'error';
+                $errorMsg = 'Ошибка создания auto_detected адреса: ' . $e->getMessage();
+                $result['errors'][] = $errorMsg;
+                $result['logs'][] = '❌ Ошибка: ' . $errorMsg;
+                $result['logs'][] = '📚 Trace: ' . $e->getTraceAsString();
+            }
+
+            // Шаг 3: Создание тестового user_selected адреса
+            $result['logs'][] = '📝 Шаг 3: Создание тестового user_selected адреса';
+            try {
+                $userAddressData = [
+                    'user_id' => $user->id,
+                    'type' => 'user_selected',
+                    'source' => 'user_selected',
+                    'title' => 'Тестовый выбранный пользователем адрес',
+                    'city' => 'Москва',
+                    'address' => 'Москва, ул Тверская, д 10',
+                    'latitude' => 55.7558,
+                    'longitude' => 37.6173,
+                    'is_default' => true,
+                    'is_active' => true
+                ];
+                
+                // Добавляем дополнительные поля (если они существуют в таблице)
+                try {
+                    $userAddressData['region'] = 'Московская область';
+                    $userAddressData['region_with_type'] = 'Московская обл';
+                    $userAddressData['country'] = 'Россия';
+                    $userAddressData['street'] = 'Тверская';
+                    $userAddressData['street_with_type'] = 'ул Тверская';
+                    $userAddressData['house'] = '10';
+                    $userAddressData['full_address'] = 'г Москва, ул Тверская, д 10';
+                } catch (\Exception $e) {
+                    // Игнорируем ошибки добавления дополнительных полей
+                }
+                
+                $userAddress = \Marvel\Database\Models\UserAddress::updateOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'type' => 'user_selected',
+                        'source' => 'user_selected'
+                    ],
+                    $userAddressData
+                );
+                
+                $result['details']['user_selected_address'] = [
+                    'id' => $userAddress->id ?? null,
+                    'type' => $userAddress->type ?? null,
+                    'source' => $userAddress->source ?? null,
+                    'city' => $userAddress->city ?? null,
+                    'created' => isset($userAddress->wasRecentlyCreated) ? $userAddress->wasRecentlyCreated : false
+                ];
+                
+                $result['logs'][] = '✅ User_selected адрес создан/найден: ID=' . ($userAddress->id ?? 'неизвестно') . ', type=' . ($userAddress->type ?? 'неизвестно') . ', source=' . ($userAddress->source ?? 'неизвестно');
+            } catch (\Exception $e) {
+                $result['status'] = 'error';
+                $errorMsg = 'Ошибка создания user_selected адреса: ' . $e->getMessage();
+                $result['errors'][] = $errorMsg;
+                $result['logs'][] = '❌ Ошибка: ' . $errorMsg;
+                $result['logs'][] = '📚 Trace: ' . $e->getTraceAsString();
+            }
+
+            // Шаг 4: Проверка приоритета через прямой запрос к БД (имитация /api/geoip/address/saved)
+            $result['logs'][] = '🔍 Шаг 4: Проверка приоритета (имитация /api/geoip/address/saved)';
+            try {
+                // Прямой запрос к БД, как в /api/geoip/address/saved
+                $userAddress = \Marvel\Database\Models\UserAddress::where('user_id', $user->id)
+                    ->where('type', 'user_selected')
+                    ->where('source', 'user_selected')
+                    ->where('is_active', true)
+                    ->orderBy('is_default', 'desc')
+                    ->orderBy('updated_at', 'desc')
+                    ->first();
+                
+                if ($userAddress) {
+                    $result['details']['saved_endpoint'] = [
+                        'found' => true,
+                        'city' => $userAddress->city,
+                        'source_type' => 'user_selected',
+                        'full_address' => $userAddress->full_address
+                    ];
+                    
+                    if ($userAddress->city === 'Москва') {
+                        $result['logs'][] = '✅ Приоритет работает правильно: найден user_selected адрес (Москва)';
+                    } else {
+                        $result['status'] = 'warning';
+                        $result['warnings'][] = 'Найден user_selected адрес, но город не Москва: ' . $userAddress->city;
+                        $result['logs'][] = '⚠️ Найден адрес: city=' . $userAddress->city;
+                    }
+                } else {
+                    // Проверяем auto_detected
+                    $autoAddress = \Marvel\Database\Models\UserAddress::where('user_id', $user->id)
+                        ->where('type', 'auto_detected')
+                        ->where('source', 'auto_detected')
+                        ->where('is_active', true)
+                        ->orderBy('updated_at', 'desc')
+                        ->first();
+                    
+                    if ($autoAddress) {
+                        $result['details']['saved_endpoint'] = [
+                            'found' => true,
+                            'city' => $autoAddress->city,
+                            'source_type' => 'auto_detected',
+                            'full_address' => $autoAddress->full_address
+                        ];
+                        $result['logs'][] = '⚠️ Найден только auto_detected адрес: ' . $autoAddress->city;
+                    } else {
+                        $result['status'] = 'warning';
+                        $result['warnings'][] = 'Адрес не найден (ни user_selected, ни auto_detected)';
+                        $result['logs'][] = '⚠️ Адрес не найден';
+                    }
+                }
+            } catch (\Exception $e) {
+                $result['status'] = 'warning';
+                $result['warnings'][] = 'Ошибка проверки приоритета: ' . $e->getMessage();
+                $result['logs'][] = '⚠️ Ошибка: ' . $e->getMessage();
+                $result['logs'][] = '📚 Trace: ' . $e->getTraceAsString();
+            }
+
+            // Шаг 5: Проверка приоритета через прямой запрос (имитация /api/geoip/location)
+            $result['logs'][] = '🔍 Шаг 5: Проверка приоритета (имитация /api/geoip/location)';
+            try {
+                // Прямой запрос к БД, как в /api/geoip/location
+                // Сначала проверяем user_selected
+                $locationAddress = \Marvel\Database\Models\UserAddress::where('user_id', $user->id)
+                    ->where('type', 'user_selected')
+                    ->where('source', 'user_selected')
+                    ->where('is_active', true)
+                    ->orderBy('is_default', 'desc')
+                    ->orderBy('updated_at', 'desc')
+                    ->first();
+                
+                // Если нет user_selected, проверяем auto_detected
+                if (!$locationAddress) {
+                    $locationAddress = \Marvel\Database\Models\UserAddress::where('user_id', $user->id)
+                        ->where('type', 'auto_detected')
+                        ->where('source', 'auto_detected')
+                        ->where('is_active', true)
+                        ->orderBy('updated_at', 'desc')
+                        ->first();
+                }
+                
+                $priorityAddress = $locationAddress;
+                
+                if ($priorityAddress) {
+                    $result['details']['location_endpoint'] = [
+                        'found' => true,
+                        'city' => $priorityAddress->city,
+                        'source' => $priorityAddress->type,
+                        'from_saved' => true
+                    ];
+                    
+                    if ($priorityAddress->type === 'user_selected' && $priorityAddress->city === 'Москва') {
+                        $result['logs'][] = '✅ Приоритет работает правильно: выбран user_selected адрес (Москва)';
+                    } else {
+                        $result['status'] = 'warning';
+                        $result['warnings'][] = 'Приоритет работает неправильно: выбран ' . $priorityAddress->type . ' адрес вместо user_selected';
+                        $result['logs'][] = '⚠️ Выбран адрес: type=' . $priorityAddress->type . ', city=' . $priorityAddress->city;
+                    }
+                } else {
+                    $result['status'] = 'warning';
+                    $result['warnings'][] = 'Адрес не найден';
+                    $result['logs'][] = '⚠️ Адрес не найден';
+                }
+            } catch (\Exception $e) {
+                $result['status'] = 'warning';
+                $result['warnings'][] = 'Ошибка проверки приоритета: ' . $e->getMessage();
+                $result['logs'][] = '⚠️ Ошибка: ' . $e->getMessage();
+                $result['logs'][] = '📚 Trace: ' . $e->getTraceAsString();
+            }
+
+            // Шаг 6: Проверка прямого запроса к БД
+            $result['logs'][] = '🔍 Шаг 6: Проверка прямого запроса к БД (приоритет user_selected > auto_detected)';
+            try {
+                // Сначала проверяем user_selected
+                $userSelectedAddress = \Marvel\Database\Models\UserAddress::where('user_id', $user->id)
+                    ->where('type', 'user_selected')
+                    ->where('source', 'user_selected')
+                    ->where('is_active', true)
+                    ->orderBy('updated_at', 'desc')
+                    ->first();
+                
+                // Если нет user_selected, проверяем auto_detected
+                if (!$userSelectedAddress) {
+                    $userSelectedAddress = \Marvel\Database\Models\UserAddress::where('user_id', $user->id)
+                        ->where('type', 'auto_detected')
+                        ->where('source', 'auto_detected')
+                        ->where('is_active', true)
+                        ->orderBy('updated_at', 'desc')
+                        ->first();
+                }
+                
+                $priorityAddress = $userSelectedAddress;
+                
+                if ($priorityAddress) {
+                    $result['details']['database_priority'] = [
+                        'found' => true,
+                        'id' => $priorityAddress->id,
+                        'type' => $priorityAddress->type,
+                        'source' => $priorityAddress->source,
+                        'city' => $priorityAddress->city
+                    ];
+                    
+                    if ($priorityAddress->type === 'user_selected' && $priorityAddress->city === 'Москва') {
+                        $result['logs'][] = '✅ Приоритет в БД работает правильно: выбран user_selected адрес (Москва)';
+                    } else {
+                        $result['status'] = 'warning';
+                        $result['warnings'][] = 'Приоритет в БД работает неправильно: выбран ' . $priorityAddress->type . ' адрес вместо user_selected';
+                        $result['logs'][] = '⚠️ Выбран адрес: type=' . $priorityAddress->type . ', city=' . $priorityAddress->city;
+                    }
+                } else {
+                    $result['status'] = 'warning';
+                    $result['warnings'][] = 'Адрес не найден в БД';
+                    $result['logs'][] = '⚠️ Адрес не найден';
+                }
+            } catch (\Exception $e) {
+                $result['status'] = 'error';
+                $result['errors'][] = 'Ошибка проверки приоритета в БД: ' . $e->getMessage();
+                $result['logs'][] = '❌ Ошибка: ' . $e->getMessage();
+            }
+
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = 'Критическая ошибка: ' . $e->getMessage();
+            $result['logs'][] = '❌ Критическая ошибка: ' . $e->getMessage();
+            $result['logs'][] = '📚 Trace: ' . $e->getTraceAsString();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Проверка API ключей
+     */
+    private function checkApiKeys()
+    {
+        $result = [
+            'name' => 'API ключи',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+        ];
+
+        try {
+            $dadataApiKey = config('services.dadata.api_key');
+            $dadataSecretKey = config('services.dadata.secret_key');
+            $yandexKey = config('services.yandex_locator.api_key');
+            $geocoderKey = config('services.yandex_geocoder.api_key');
+            
+            $result['details']['dadata_api_key'] = [
+                'exists' => !empty($dadataApiKey),
+                'value' => $dadataApiKey ? substr($dadataApiKey, 0, 10) . '...' : null,
+                'length' => $dadataApiKey ? strlen($dadataApiKey) : 0,
+            ];
+            
+            $result['details']['dadata_secret_key'] = [
+                'exists' => !empty($dadataSecretKey),
+                'value' => $dadataSecretKey ? '***' : null,
+                'length' => $dadataSecretKey ? strlen($dadataSecretKey) : 0,
+            ];
+            
+            $result['details']['yandex_geo_api_key'] = [
+                'exists' => !empty($yandexKey),
+                'value' => $yandexKey ? substr($yandexKey, 0, 10) . '...' : null,
+                'length' => $yandexKey ? strlen($yandexKey) : 0,
+                'note' => 'опционально (отключен)'
+            ];
+            
+            $result['details']['yandex_geocoder_api_key'] = [
+                'exists' => !empty($geocoderKey),
+                'value' => $geocoderKey ? substr($geocoderKey, 0, 10) . '...' : null,
+                'length' => $geocoderKey ? strlen($geocoderKey) : 0,
+                'note' => 'опционально (отключен)'
+            ];
+
+            if (empty($dadataApiKey) || empty($dadataSecretKey)) {
+                $result['status'] = 'error';
+                $result['errors'][] = 'DaData API ключи не настроены в .env (DADATA_API_KEY, DADATA_SECRET_KEY)';
+            }
+
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = 'Ошибка при проверке API ключей: ' . $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Проверка базы данных MaxMind
+     */
+    private function checkMaxMindDatabase()
+    {
+        $result = [
+            'name' => 'База данных MaxMind',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+        ];
+
+        try {
+            $dbPath = storage_path('app/geoip/GeoLite2-City.mmdb');
+            $result['details']['database_path'] = $dbPath;
+            $result['details']['exists'] = file_exists($dbPath);
+            $result['details']['readable'] = file_exists($dbPath) && is_readable($dbPath);
+            
+            if (file_exists($dbPath)) {
+                $result['details']['size'] = filesize($dbPath);
+                $result['details']['modified'] = date('Y-m-d H:i:s', filemtime($dbPath));
+            } else {
+                $result['status'] = 'warning';
+                $result['warnings'][] = 'База данных MaxMind не найдена: ' . $dbPath;
+            }
+
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = 'Ошибка при проверке базы данных: ' . $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Тест MaxMind
+     */
+    private function testMaxMind()
+    {
+        $result = [
+            'name' => 'Тест MaxMind',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+        ];
+
+        try {
+            $testIp = request()->query('ip', request()->ip());
+            if (in_array($testIp, ['127.0.0.1', '::1'])) {
+                $testIp = '95.24.18.3'; // Тестовый IP из России
+            }
+            
+            $result['details']['test_ip'] = $testIp;
+            
+            $geoService = app(GeoLocationService::class);
+            $location = $geoService->getLocationByIp($testIp);
+            
+            if ($location && isset($location['city'])) {
+                $result['details']['working'] = true;
+                $result['details']['city'] = $location['city'] ?? null;
+                $result['details']['country'] = $location['country'] ?? null;
+                $result['details']['lat'] = $location['lat'] ?? null;
+                $result['details']['lon'] = $location['lon'] ?? null;
+                $result['details']['source'] = $location['source'] ?? null;
+            } else {
+                $result['status'] = 'warning';
+                $result['warnings'][] = 'MaxMind вернул пустые данные';
+            }
+
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = 'Ошибка при тестировании MaxMind: ' . $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Тест Yandex Locator
+     */
+    private function testYandexLocator()
+    {
+        $result = [
+            'name' => 'Тест Yandex Locator',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+        ];
+
+        try {
+            $testIp = request()->query('ip', request()->ip());
+            if (in_array($testIp, ['127.0.0.1', '::1'])) {
+                $testIp = '95.24.18.3';
+            }
+            
+            $result['details']['test_ip'] = $testIp;
+            $result['details']['configured'] = !empty(config('services.yandex_locator.api_key'));
+            
+            if (config('services.yandex_locator.api_key')) {
+                $yandexService = app(YandexGeoService::class);
+                $location = $yandexService->getLocationByIp($testIp);
+                
+                if ($location) {
+                    $result['details']['working'] = true;
+                    $result['details']['lat'] = $location['lat'] ?? null;
+                    $result['details']['lon'] = $location['lon'] ?? null;
+                    $result['details']['accuracy'] = $location['accuracy'] ?? null;
+                    $result['details']['source'] = $location['source'] ?? null;
+                } else {
+                    $result['status'] = 'warning';
+                    $result['warnings'][] = 'Yandex Locator вернул null. Проверьте логи для деталей.';
+                }
+            } else {
+                $result['status'] = 'warning';
+                $result['warnings'][] = 'YANDEX_GEO_API_KEY не настроен. Проверьте .env и выполните: php artisan config:clear';
+                $result['details']['env_check'] = [
+                    'YANDEX_GEO_API_KEY_env' => env('YANDEX_GEO_API_KEY') ? 'настроен (' . substr(env('YANDEX_GEO_API_KEY'), 0, 10) . '...)' : 'не настроен',
+                    'config_yandex_locator_api_key' => config('services.yandex_locator.api_key') ? 'настроен' : 'не настроен',
+                ];
+            }
+
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = 'Ошибка при тестировании Yandex Locator: ' . $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Тест гибридной системы
+     */
+    private function testHybridSystem()
+    {
+        $result = [
+            'name' => 'Тест гибридной системы',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+        ];
+
+        try {
+            $testIp = request()->query('ip', request()->ip());
+            if (in_array($testIp, ['127.0.0.1', '::1'])) {
+                $testIp = '95.24.18.3';
+            }
+            
+            $result['details']['test_ip'] = $testIp;
+            
+            $geoService = app(GeoLocationService::class);
+            $location = $geoService->getLocationByIp($testIp);
+            
+            if ($location && isset($location['city'])) {
+                $result['details']['working'] = true;
+                $result['details']['city'] = $location['city'] ?? null;
+                $result['details']['country'] = $location['country'] ?? null;
+                $result['details']['lat'] = $location['lat'] ?? null;
+                $result['details']['lon'] = $location['lon'] ?? null;
+                $result['details']['source'] = $location['source'] ?? null;
+                $result['details']['base_source'] = $location['base_source'] ?? null;
+            } else {
+                $result['status'] = 'error';
+                $result['errors'][] = 'Гибридная система вернула пустые данные';
+            }
+
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = 'Ошибка при тестировании гибридной системы: ' . $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Проверка маршрутов
+     */
+    private function checkRoutes()
+    {
+        $result = [
+            'name' => 'Маршруты',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+        ];
+
+        try {
+            $routesToCheck = [
+                '/api/geoip/location' => 'GET,POST /api/geoip/location',
+                '/api/geoip/cities/search' => 'GET /api/geoip/cities/search',
+                '/api/geoip/city/save' => 'POST /api/geoip/city/save',
+                '/api/geoip/city/saved' => 'GET /api/geoip/city/saved',
+                '/api/geoip/addresses/search' => 'GET /api/geoip/addresses/search',
+                '/api/geoip/address/save' => 'POST /api/geoip/address/save',
+                '/api/geoip/address/saved' => 'GET /api/geoip/address/saved',
+            ];
+
+            $allRoutes = Route::getRoutes();
+            
+            foreach ($routesToCheck as $uri => $description) {
+                $found = false;
+                $routeInfo = null;
+                
+                // Ищем маршрут по URI
+                foreach ($allRoutes as $route) {
+                    $routeUri = '/' . $route->uri();
+                    $checkUri = $uri;
+                    
+                    // Проверяем точное совпадение или совпадение без префикса api
+                    if ($routeUri === $checkUri || 
+                        $routeUri === str_replace('/api', '', $checkUri) ||
+                        strpos($routeUri, str_replace('/api/geoip', '', $checkUri)) !== false) {
+                        $found = true;
+                        $routeInfo = [
+                            'uri' => $route->uri(),
+                            'methods' => $route->methods(),
+                            'name' => $route->getName(),
+                        ];
+                        break;
+                    }
+                }
+                
+                if ($found && $routeInfo) {
+                    $result['details'][$description] = [
+                        'exists' => true,
+                        'uri' => $routeInfo['uri'],
+                        'methods' => $routeInfo['methods'],
+                        'name' => $routeInfo['name'] ?: 'без имени',
+                    ];
+                } else {
+                    $result['details'][$description] = [
+                        'exists' => false,
+                    ];
+                    $result['warnings'][] = "Маршрут {$description} не найден";
+                }
+            }
+
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = 'Ошибка при проверке маршрутов: ' . $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Проверка таблицы geo_ip_cache (кэш БД)
+     */
+    private function checkDatabaseCache()
+    {
+        $result = [
+            'name' => 'Кэш БД (geo_ip_cache)',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+        ];
+
+        try {
+            // Проверяем существование таблицы
+            $tableExists = Schema::hasTable('geo_ip_cache');
+            $result['details']['table_exists'] = $tableExists;
+            
+            if (!$tableExists) {
+                $result['status'] = 'error';
+                $result['errors'][] = 'Таблица geo_ip_cache не существует. Выполните: php artisan migrate';
+                return $result;
+            }
+            
+            // Статистика по кэшу
+            $totalRecords = GeoIpCache::count();
+            $dadataRecords = GeoIpCache::where('source', 'dadata')->count();
+            $maxmindRecords = GeoIpCache::where('source', 'maxmind')->count();
+            $totalRequests = GeoIpCache::sum('request_count');
+            
+            $result['details']['statistics'] = [
+                'total_records' => $totalRecords,
+                'dadata_records' => $dadataRecords,
+                'maxmind_records' => $maxmindRecords,
+                'total_requests_saved' => $totalRequests,
+                'estimated_dadata_quota_saved' => $dadataRecords > 0 ? $dadataRecords . ' запросов' : '0'
+            ];
+            
+            // Топ IP по использованию
+            $topIps = GeoIpCache::orderBy('request_count', 'desc')
+                ->limit(5)
+                ->get(['ip_address', 'city', 'country', 'request_count', 'last_used_at', 'source']);
+            
+            $result['details']['top_ips'] = $topIps->map(function ($item) {
+                return [
+                    'ip' => $item->ip_address,
+                    'city' => $item->city,
+                    'country' => $item->country,
+                    'requests' => $item->request_count,
+                    'last_used' => $item->last_used_at?->toDateTimeString(),
+                    'source' => $item->source
+                ];
+            })->toArray();
+            
+            // Проверяем текущий IP
+            $currentIp = request()->ip();
+            if (!in_array($currentIp, ['127.0.0.1', '::1'])) {
+                $currentIpCache = GeoIpCache::findByIp($currentIp);
+                $result['details']['current_ip'] = [
+                    'ip' => $currentIp,
+                    'cached' => $currentIpCache !== null,
+                    'city' => $currentIpCache?->city,
+                    'source' => $currentIpCache?->source,
+                    'request_count' => $currentIpCache?->request_count
+                ];
+            }
+
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = 'Ошибка при проверке кэша БД: ' . $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Проверка кэша Redis
+     */
+    private function checkCache()
+    {
+        $result = [
+            'name' => 'Кэш Redis',
+            'status' => 'ok',
+            'details' => [],
+            'errors' => [],
+            'warnings' => [],
+        ];
+
+        try {
+            $driver = config('cache.default');
+            $result['details']['driver'] = $driver;
+            
+            $testKey = 'geolocation_test_' . time();
+            $testValue = 'test_value_' . rand(1000, 9999);
+            
+            Cache::put($testKey, $testValue, 60);
+            $retrieved = Cache::get($testKey);
+            
+            $result['details']['test_write_read'] = [
+                'success' => $retrieved === $testValue,
+                'value' => $retrieved,
+            ];
+            
+            if ($retrieved !== $testValue) {
+                $result['status'] = 'error';
+                $result['errors'][] = 'Кэш не работает корректно';
+            }
+            
+            Cache::forget($testKey);
+
+        } catch (\Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = 'Ошибка при проверке кэша: ' . $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Рендер HTML страницы
+     */
+    private function renderHtml($results)
+    {
+        $html = '<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест геолокации</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            margin: 0;
+            color: #333;
+        }
+        .summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .summary.success {
+            border-left: 4px solid #10b981;
+        }
+        .summary.error {
+            border-left: 4px solid #ef4444;
+        }
+        .check {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .check-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .check-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        .status {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status.ok {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .status.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .details {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .details pre {
+            margin: 0;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+        .error-list, .warning-list {
+            margin-top: 10px;
+        }
+        .error-list li {
+            color: #dc2626;
+            margin: 5px 0;
+        }
+        .warning-list li {
+            color: #d97706;
+            margin: 5px 0;
+        }
+        .timestamp {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .city-result {
+            background: #e0f2fe;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            border-left: 4px solid #0284c7;
+        }
+        .city-result h4 {
+            margin: 0 0 10px 0;
+            color: #0c4a6e;
+        }
+        .city-result p {
+            margin: 5px 0;
+            color: #075985;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📍 Тест геолокации</h1>
+        <div class="timestamp">Время проверки: ' . $results['timestamp'] . '</div>
+    </div>
+
+    <div class="summary ' . ($results['success'] ? 'success' : 'error') . '">
+        <h2>' . ($results['success'] ? '✅ Все проверки пройдены' : '❌ Обнаружены ошибки') . '</h2>';
+        
+        $testIp = request()->query('ip', request()->ip());
+        if (in_array($testIp, ['127.0.0.1', '::1'])) {
+            $testIp = '95.24.18.3';
+        }
+        
+        $html .= '<p>Тестовый IP: <strong>' . htmlspecialchars($testIp) . '</strong></p>';
+        $html .= '<p>Ваш реальный IP: <strong>' . htmlspecialchars(request()->ip()) . '</strong></p>';
+        
+        $html .= '<p style="margin-top: 10px;">
+            <a href="?clear_cache=1&ip=' . urlencode($testIp) . '" 
+               style="background: #ef4444; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; display: inline-block; margin-right: 10px;"
+               onclick="return confirm(\'Очистить кэш для IP ' . htmlspecialchars($testIp) . '? Это позволит проверить работу DaData API.\')">
+                🗑️ Очистить кэш для этого IP
+            </a>
+            <a href="?clear_cache=1&clear_all=1" 
+               style="background: #dc2626; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; display: inline-block;"
+               onclick="return confirm(\'Очистить ВЕСЬ кэш геолокации (БД и Redis)? Это удалит все сохраненные IP адреса.\')">
+                🗑️ Очистить ВЕСЬ кэш геолокации
+            </a>
+        </p>';
+        
+        if (session('success')) {
+            $html .= '<p style="color: #10b981; margin-top: 10px;">✅ ' . htmlspecialchars(session('success')) . '</p>';
+        }
+        
+        $html .= '</div>';
+
+        if (!empty($results['errors'])) {
+            $html .= '<h3>Ошибки:</h3><ul class="error-list">';
+            foreach ($results['errors'] as $error) {
+                $html .= '<li>' . htmlspecialchars($error) . '</li>';
+            }
+            $html .= '</ul>';
+        }
+
+        if (!empty($results['warnings'])) {
+            $html .= '<h3>Предупреждения:</h3><ul class="warning-list">';
+            foreach ($results['warnings'] as $warning) {
+                $html .= '<li>' . htmlspecialchars($warning) . '</li>';
+            }
+            $html .= '</ul>';
+        }
+
+        // Показываем результат определения города (приоритет DaData)
+        $cityData = null;
+        if (isset($results['checks']['dadata_test']['details']['city'])) {
+            $cityData = $results['checks']['dadata_test']['details'];
+        } elseif (isset($results['checks']['hybrid_system_test']['details']['city'])) {
+            $cityData = $results['checks']['hybrid_system_test']['details'];
+        }
+        
+        if ($cityData) {
+            $fromCache = isset($cityData['from_cache']) && $cityData['from_cache'];
+            $cacheNote = isset($cityData['note']) ? $cityData['note'] : '';
+            
+            $html .= '<div class="city-result">
+                <h4>🎯 Определенный город (DaData):</h4>
+                <p><strong>Город:</strong> ' . htmlspecialchars($cityData['city'] ?? 'Не определен') . '</p>
+                <p><strong>Страна:</strong> ' . htmlspecialchars($cityData['country'] ?? 'Не определена') . '</p>
+                <p><strong>Координаты:</strong> ' . htmlspecialchars(($cityData['lat'] ?? 'N/A') . ', ' . ($cityData['lon'] ?? 'N/A')) . '</p>
+                <p><strong>Источник:</strong> ' . htmlspecialchars($cityData['source'] ?? 'unknown') . '</p>';
+            
+            if ($fromCache) {
+                $html .= '<p><strong>📦 Из кэша БД:</strong> Да (экономия лимита DaData)</p>';
+            }
+            
+            if ($cacheNote) {
+                $html .= '<p><em>' . htmlspecialchars($cacheNote) . '</em></p>';
+            }
+            
+            if (isset($cityData['cache_info'])) {
+                $cacheInfo = $cityData['cache_info'];
+                $html .= '<p><strong>Статистика кэша:</strong> Использовано ' . ($cacheInfo['request_count'] ?? 0) . ' раз, последний раз: ' . ($cacheInfo['last_used_at'] ?? 'N/A') . '</p>';
+            }
+            
+            $html .= '</div>';
+        }
+        
+        // Показываем тест поиска адресов DaData
+        if (isset($results['checks']['dadata_address_search'])) {
+            $addressSearch = $results['checks']['dadata_address_search'];
+            $statusClass = $addressSearch['status'] === 'ok' ? 'success' : ($addressSearch['status'] === 'warning' ? 'warning' : 'error');
+            $statusIcon = $addressSearch['status'] === 'ok' ? '✅' : ($addressSearch['status'] === 'warning' ? '⚠️' : '❌');
+            
+            $html .= '<div class="city-result" style="background: ' . ($statusClass === 'ok' ? '#d1fae5' : ($statusClass === 'warning' ? '#fef3c7' : '#fee2e2')) . '; border-left: 4px solid ' . ($statusClass === 'ok' ? '#10b981' : ($statusClass === 'warning' ? '#f59e0b' : '#ef4444')) . ';">
+                <h4>' . $statusIcon . ' ' . htmlspecialchars($addressSearch['name']) . '</h4>';
+            
+            if (isset($addressSearch['details']['working']) && $addressSearch['details']['working']) {
+                $html .= '<p><strong>Запрос:</strong> ' . htmlspecialchars($addressSearch['details']['test_query'] ?? 'N/A') . '</p>';
+                $html .= '<p><strong>Найдено адресов:</strong> ' . ($addressSearch['details']['found'] ?? 0) . '</p>';
+                
+                if (isset($addressSearch['details']['addresses']) && is_array($addressSearch['details']['addresses']) && count($addressSearch['details']['addresses']) > 0) {
+                    $html .= '<div style="margin-top: 10px;"><strong>Примеры найденных адресов:</strong></div>';
+                    foreach ($addressSearch['details']['addresses'] as $idx => $addr) {
+                        $html .= '<div style="padding: 8px; margin: 5px 0; background: rgba(255,255,255,0.7); border-radius: 4px; border: 1px solid #ddd;">';
+                        $html .= '<strong>' . ($idx + 1) . '. ' . htmlspecialchars($addr['value'] ?? $addr['full_address'] ?? $addr['address'] ?? 'N/A') . '</strong><br>';
+                        if (isset($addr['city'])) {
+                            $html .= '<small style="color: #666;">' . htmlspecialchars($addr['city']);
+                            if (isset($addr['street_with_type'])) {
+                                $html .= ', ' . htmlspecialchars($addr['street_with_type']);
+                            }
+                            if (isset($addr['house'])) {
+                                $html .= ', д. ' . htmlspecialchars($addr['house']);
+                            }
+                            $html .= '</small>';
+                        }
+                        $html .= '</div>';
+                    }
+                }
+            }
+            
+            if (!empty($addressSearch['errors'])) {
+                foreach ($addressSearch['errors'] as $error) {
+                    $html .= '<p style="color: #dc2626; margin-top: 5px;">❌ ' . htmlspecialchars($error) . '</p>';
+                }
+            }
+            
+            if (!empty($addressSearch['warnings'])) {
+                foreach ($addressSearch['warnings'] as $warning) {
+                    $html .= '<p style="color: #d97706; margin-top: 5px;">⚠️ ' . htmlspecialchars($warning) . '</p>';
+                }
+            }
+            
+            $html .= '</div>';
+        }
+        
+        // Показываем статистику кэша БД
+        if (isset($results['checks']['database_cache']['details']['statistics'])) {
+            $stats = $results['checks']['database_cache']['details']['statistics'];
+            $html .= '<div class="city-result" style="background: #e0f2fe; border-left: 4px solid #0284c7;">
+                <h4>💾 Статистика кэша БД:</h4>
+                <p><strong>Всего записей:</strong> ' . ($stats['total_records'] ?? 0) . '</p>
+                <p><strong>Записей от DaData:</strong> ' . ($stats['dadata_records'] ?? 0) . '</p>
+                <p><strong>Записей от MaxMind:</strong> ' . ($stats['maxmind_records'] ?? 0) . '</p>
+                <p><strong>Всего запросов сохранено:</strong> ' . ($stats['total_requests_saved'] ?? 0) . '</p>
+                <p><strong>💰 Экономия лимита DaData:</strong> ~' . ($stats['estimated_dadata_quota_saved'] ?? '0') . '</p>
+            </div>';
+        }
+
+        $html .= '</div>';
+
+        foreach ($results['checks'] as $check) {
+            // Специальная обработка для теста сохранения адреса
+            if (isset($check['name']) && strpos($check['name'], 'Тест сохранения и загрузки адреса') !== false) {
+                $html .= '<div class="check">
+                    <div class="check-header">
+                        <div class="check-title">' . htmlspecialchars($check['name']) . '</div>
+                        <span class="status ' . $check['status'] . '">' . $check['status'] . '</span>
+                    </div>';
+
+                // Выводим логи
+                if (!empty($check['logs'])) {
+                    $html .= '<div class="details" style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 4px; margin-top: 10px; max-height: 600px; overflow-y: auto; font-family: monospace; font-size: 12px;">';
+                    $html .= '<h4 style="color: #60a5fa; margin-top: 0;">📋 Логи выполнения:</h4>';
+                    
+                    // Добавляем инструкцию, если пользователь не авторизован
+                    if (isset($check['details']['authenticated']) && !$check['details']['authenticated']) {
+                        $html .= '<div style="background: #fef3c7; color: #92400e; padding: 10px; border-radius: 4px; margin-bottom: 10px; border-left: 4px solid #f59e0b;">';
+                        $html .= '<strong>💡 Как получить токен для тестирования:</strong><br>';
+                        $html .= '1. Авторизуйтесь на сайте через веб-интерфейс<br>';
+                        $html .= '2. Откройте консоль браузера (F12)<br>';
+                        $html .= '3. Выполните: <code style="background: #1e293b; padding: 2px 6px; border-radius: 3px;">document.cookie.match(/auth_token=([^;]+)/)?.[1]</code><br>';
+                        $html .= '4. Скопируйте токен и добавьте в URL: <code style="background: #1e293b; padding: 2px 6px; border-radius: 3px;">?token=ВАШ_ТОКЕН</code><br>';
+                        $html .= 'Или просто авторизуйтесь через веб-интерфейс перед открытием этой страницы.';
+                        $html .= '</div>';
+                    }
+                    
+                    foreach ($check['logs'] as $log) {
+                        $html .= '<div style="padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">' . htmlspecialchars($log) . '</div>';
+                    }
+                    $html .= '</div>';
+                }
+
+                // Выводим детали
+                if (!empty($check['details'])) {
+                    $html .= '<div class="details" style="margin-top: 15px;">
+                        <h4>📊 Детали:</h4>
+                        <pre>' . htmlspecialchars(json_encode($check['details'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) . '</pre>
+                    </div>';
+                }
+
+                if (!empty($check['errors'])) {
+                    $html .= '<ul class="error-list">';
+                    foreach ($check['errors'] as $error) {
+                        $html .= '<li>' . htmlspecialchars($error) . '</li>';
+                    }
+                    $html .= '</ul>';
+                }
+
+                if (!empty($check['warnings'])) {
+                    $html .= '<ul class="warning-list">';
+                    foreach ($check['warnings'] as $warning) {
+                        $html .= '<li>' . htmlspecialchars($warning) . '</li>';
+                    }
+                    $html .= '</ul>';
+                }
+
+                $html .= '</div>';
+            } elseif (isset($check['name']) && strpos($check['name'], 'Тест логики приоритетов адресов') !== false) {
+                // Специальная обработка для теста приоритетов адресов
+                $html .= '<div class="check">
+                    <div class="check-header">
+                        <div class="check-title">' . htmlspecialchars($check['name']) . '</div>
+                        <span class="status ' . $check['status'] . '">' . $check['status'] . '</span>
+                    </div>';
+
+                // Выводим логи
+                if (!empty($check['logs'])) {
+                    $html .= '<div class="details" style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 4px; margin-top: 10px; max-height: 600px; overflow-y: auto; font-family: monospace; font-size: 12px;">';
+                    $html .= '<h4 style="color: #60a5fa; margin-top: 0;">📋 Логи выполнения:</h4>';
+                    
+                    foreach ($check['logs'] as $log) {
+                        $html .= '<div style="padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">' . htmlspecialchars($log) . '</div>';
+                    }
+                    $html .= '</div>';
+                }
+
+                // Выводим детали
+                if (!empty($check['details'])) {
+                    $html .= '<div class="details" style="margin-top: 15px;">
+                        <h4>📊 Детали:</h4>
+                        <pre>' . htmlspecialchars(json_encode($check['details'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) . '</pre>
+                    </div>';
+                }
+
+                if (!empty($check['errors'])) {
+                    $html .= '<ul class="error-list">';
+                    foreach ($check['errors'] as $error) {
+                        $html .= '<li>' . htmlspecialchars($error) . '</li>';
+                    }
+                    $html .= '</ul>';
+                }
+
+                if (!empty($check['warnings'])) {
+                    $html .= '<ul class="warning-list">';
+                    foreach ($check['warnings'] as $warning) {
+                        $html .= '<li>' . htmlspecialchars($warning) . '</li>';
+                    }
+                    $html .= '</ul>';
+                }
+
+                $html .= '</div>';
+            } else {
+                $html .= '<div class="check">
+                    <div class="check-header">
+                        <div class="check-title">' . htmlspecialchars($check['name']) . '</div>
+                        <span class="status ' . $check['status'] . '">' . $check['status'] . '</span>
+                    </div>';
+
+                // Выводим логи
+                if (!empty($check['logs'])) {
+                    $html .= '<div class="details" style="background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 4px; margin-top: 10px; max-height: 600px; overflow-y: auto; font-family: monospace; font-size: 12px;">';
+                    $html .= '<h4 style="color: #60a5fa; margin-top: 0;">📋 Логи выполнения:</h4>';
+                    
+                    // Добавляем инструкцию, если пользователь не авторизован
+                    if (isset($check['details']['authenticated']) && !$check['details']['authenticated']) {
+                        $html .= '<div style="background: #fef3c7; color: #92400e; padding: 10px; border-radius: 4px; margin-bottom: 10px; border-left: 4px solid #f59e0b;">';
+                        $html .= '<strong>💡 Как получить токен для тестирования:</strong><br>';
+                        $html .= '1. Авторизуйтесь на сайте через веб-интерфейс<br>';
+                        $html .= '2. Откройте консоль браузера (F12)<br>';
+                        $html .= '3. Выполните: <code style="background: #1e293b; padding: 2px 6px; border-radius: 3px;">document.cookie.match(/auth_token=([^;]+)/)?.[1]</code><br>';
+                        $html .= '4. Скопируйте токен и добавьте в URL: <code style="background: #1e293b; padding: 2px 6px; border-radius: 3px;">?token=ВАШ_ТОКЕН</code><br>';
+                        $html .= 'Или просто авторизуйтесь через веб-интерфейс перед открытием этой страницы.';
+                        $html .= '</div>';
+                    }
+                    
+                    foreach ($check['logs'] as $log) {
+                        $html .= '<div style="padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">' . htmlspecialchars($log) . '</div>';
+                    }
+                    $html .= '</div>';
+                }
+
+                // Выводим детали
+                if (!empty($check['details'])) {
+                    $html .= '<div class="details" style="margin-top: 15px;">
+                        <h4>📊 Детали:</h4>
+                        <pre>' . htmlspecialchars(json_encode($check['details'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) . '</pre>
+                    </div>';
+                }
+
+                if (!empty($check['errors'])) {
+                    $html .= '<ul class="error-list">';
+                    foreach ($check['errors'] as $error) {
+                        $html .= '<li>' . htmlspecialchars($error) . '</li>';
+                    }
+                    $html .= '</ul>';
+                }
+
+                if (!empty($check['warnings'])) {
+                    $html .= '<ul class="warning-list">';
+                    foreach ($check['warnings'] as $warning) {
+                        $html .= '<li>' . htmlspecialchars($warning) . '</li>';
+                    }
+                    $html .= '</ul>';
+                }
+
+                $html .= '</div>';
+            } else {
+                // Обычная обработка для остальных проверок
+                $html .= '<div class="check">
+                    <div class="check-header">
+                        <div class="check-title">' . htmlspecialchars($check['name']) . '</div>
+                        <span class="status ' . $check['status'] . '">' . $check['status'] . '</span>
+                    </div>';
+
+                if (!empty($check['details'])) {
+                    $html .= '<div class="details">
+                        <pre>' . htmlspecialchars(json_encode($check['details'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) . '</pre>
+                    </div>';
+                }
+
+                if (!empty($check['errors'])) {
+                    $html .= '<ul class="error-list">';
+                    foreach ($check['errors'] as $error) {
+                        $html .= '<li>' . htmlspecialchars($error) . '</li>';
+                    }
+                    $html .= '</ul>';
+                }
+
+                if (!empty($check['warnings'])) {
+                    $html .= '<ul class="warning-list">';
+                    foreach ($check['warnings'] as $warning) {
+                        $html .= '<li>' . htmlspecialchars($warning) . '</li>';
+                    }
+                    $html .= '</ul>';
+                }
+
+                $html .= '</div>';
+            }
+        }
+
+        $html .= '</body></html>';
+
+        return $html;
+    }
+}
+

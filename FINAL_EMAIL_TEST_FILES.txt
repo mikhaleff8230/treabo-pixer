@@ -1,0 +1,21 @@
+🎯 Финальные файлы для заливки на сервер
+
+1. ОБЯЗАТЕЛЬНО залить:
+   - pixer-api/packages/marvel/src/Console/Commands/TestAllEmailsCommand.php
+     (исправлены проверки на null для customer и исправлена передача Balance)
+
+2. Команды для выполнения на сервере:
+   ================================================
+   composer dump-autoload
+   php artisan config:clear
+   php artisan cache:clear
+   php artisan view:clear
+   
+3. Проверка:
+   php artisan list | grep email
+   
+4. Запуск:
+   php artisan email:test-all --admin-email=sale@sancan.ru
+   
+   ИЛИ с указанием конкретного заказа:
+   php artisan email:test-all --admin-email=sale@sancan.ru --order-id=123

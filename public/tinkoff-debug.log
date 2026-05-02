@@ -1,0 +1,25 @@
+2025-06-15 01:16:27 - Начало создания платежа
+Data: {
+    "amount": "1.00",
+    "terminalKey": "1653907653899DEMO",
+    "apiUrl": "https:\/\/securepay.tinkoff.ru\/v2"
+}
+2025-06-15 01:16:27 - Отправка запроса в API
+Data: {
+    "TerminalKey": "1653907653899DEMO",
+    "Amount": 100,
+    "OrderId": "TEST-1749939387",
+    "Description": "Тестовый платеж",
+    "SuccessURL": "https:\/\/45.10.41.84:8000\/payment\/success",
+    "FailURL": "https:\/\/45.10.41.84:8000\/payment\/fail",
+    "DATA": {
+        "Email": "test@example.com"
+    },
+    "Token": "165414bb4b7ef16aafcba6e0476e47f9762864628a30709631076fcffc04a084"
+}
+2025-06-15 01:16:27 - Ответ от API
+Data: {
+    "httpCode": 200,
+    "response": "{\"Success\":true,\"ErrorCode\":\"0\",\"TerminalKey\":\"1653907653899DEMO\",\"Status\":\"NEW\",\"PaymentId\":\"6531629595\",\"OrderId\":\"TEST-1749939387\",\"Amount\":100,\"PaymentURL\":\"https:\/\/securepayments.tinkoff.ru\/ZoHjGHnk\"}",
+    "curlError": ""
+}

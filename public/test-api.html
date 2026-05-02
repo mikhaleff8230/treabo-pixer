@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест API Категорий</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .test-button { 
+            background: #007cba; 
+            color: white; 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 10px 0;
+            display: block;
+        }
+        .result { 
+            background: #f5f5f5; 
+            padding: 15px; 
+            border-radius: 5px; 
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Тест API Категорий</h1>
+        
+        <button class="test-button" onclick="testBasicAPI()">
+            1. Тест базового API (/settings)
+        </button>
+        <div id="basic-result" class="result"></div>
+
+        <button class="test-button" onclick="testCategoriesAPI()">
+            2. Тест категорий (/categories)
+        </button>
+        <div id="categories-result" class="result"></div>
+
+        <button class="test-button" onclick="testMenuAPI()">
+            3. Тест меню категорий (/categories/menu)
+        </button>
+        <div id="menu-result" class="result"></div>
+
+        <button class="test-button" onclick="testMenuAPIWithLang()">
+            4. Тест меню с языком (/categories/menu?language=ru)
+        </button>
+        <div id="menu-lang-result" class="result"></div>
+    </div>
+
+    <script>
+        async function testAPI(url, resultId) {
+            const resultDiv = document.getElementById(resultId);
+            resultDiv.innerHTML = 'Загрузка...';
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `✅ Успех (${response.status})\n\n${JSON.stringify(data, null, 2)}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `❌ Ошибка (${response.status})\n\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ Ошибка сети: ${error.message}`;
+            }
+        }
+
+        function testBasicAPI() {
+            testAPI('/settings', 'basic-result');
+        }
+
+        function testCategoriesAPI() {
+            testAPI('/categories', 'categories-result');
+        }
+
+        function testMenuAPI() {
+            testAPI('/categories/menu', 'menu-result');
+        }
+
+        function testMenuAPIWithLang() {
+            testAPI('/categories/menu?language=ru', 'menu-lang-result');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+UPDATE orders SET language = "ru" WHERE language = "en";
