@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -17,8 +18,17 @@ class HomeController extends Controller
                 // для локальной разработки можно подставить тестовый IP из РФ
                 $ip = '95.24.18.3';
             }
-            $position = Location::get($ip);
-            $city = $position && $position->cityName ? $position->cityName : null;
+            try {
+                $position = Location::get($ip);
+                $city = $position && $position->cityName ? $position->cityName : null;
+            } catch (\Throwable $exception) {
+                // Do not fail home page rendering when location provider is unavailable.
+                Log::warning('Location lookup failed', [
+                    'ip' => $ip,
+                    'error' => $exception->getMessage(),
+                ]);
+                $city = null;
+            }
         }
         return view('welcome', ['detectedCity' => $city]);
     }
