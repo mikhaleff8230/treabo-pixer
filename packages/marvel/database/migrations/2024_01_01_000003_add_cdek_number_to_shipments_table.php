@@ -11,9 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('shipments', function (Blueprint $table) {
-            $table->string('cdek_number')->nullable()->after('external_id');
-        });
     }
 
     /**
@@ -21,9 +18,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('shipments', function (Blueprint $table) {
-            $table->dropColumn('cdek_number');
-        });
     }
 };
 
