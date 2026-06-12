@@ -22,10 +22,10 @@ class GenerateYandexFeed extends Command
 
     // URL сайта
 
-public $SITE_URL = 'https://sancan.ru/';
+public $SITE_URL = 'https://treabo.md/';
 // Название сайта
 
-public $SITE_NAME = 'Sancan.ru';
+public $SITE_NAME = 'Treabo';
 
     /**
      * Execute the console command.

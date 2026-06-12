@@ -176,7 +176,7 @@ class InvoiceController extends Controller
             ]);
 
             // Создаём платёж
-            $returnUrl = config('app.frontend_url', 'https://sancan.ru') . '/dashboard/billing?payment=success';
+            $returnUrl = config('shop.dashboard_url') . '/dashboard/billing?payment=success';
             $description = "Оплата счёта #{$invoice->id} за период {$invoice->period_start->format('d.m.Y')} - {$invoice->period_end->format('d.m.Y')}";
 
             $payment = $service->createPayment(

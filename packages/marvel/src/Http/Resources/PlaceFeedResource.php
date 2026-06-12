@@ -56,7 +56,7 @@ class PlaceFeedResource extends JsonResource
                 }
 
                 if ($avatarUrl && str_starts_with($avatarUrl, '/storage/')) {
-                    return 'https://api.sancan.ru' . $avatarUrl;
+                    return rtrim(config('app.url'), '/') . $avatarUrl;
                 }
 
                 return $avatarUrl;

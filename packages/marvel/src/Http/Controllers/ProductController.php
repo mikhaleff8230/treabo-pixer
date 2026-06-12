@@ -80,7 +80,7 @@ class ProductController extends CoreController
     // === МЕТОДЫ ДЛЯ CANONICAL URL (из ProductControllerREL_NEW.php - РАБОЧАЯ ВЕРСИЯ) ===
     protected function generateCanonicalUrl($product, Request $request): string
     {
-        $baseUrl = rtrim(config('app.url', 'https://sancan.ru'), '/');
+        $baseUrl = rtrim(config('app.url', 'https://api.treabo.md'), '/');
         
         // Получаем slug и id
         if (is_array($product)) {
@@ -121,7 +121,7 @@ class ProductController extends CoreController
 
     protected function generateHreflangTags($product, Request $request): array
     {
-        $baseUrl = rtrim(config('app.url', 'https://sancan.ru'), '/');
+        $baseUrl = rtrim(config('app.url', 'https://api.treabo.md'), '/');
         
         // Получаем slug и id
         if (is_array($product)) {
@@ -288,7 +288,7 @@ class ProductController extends CoreController
         // Добавляем canonical URL для каждого продукта
         // Товары не имеют языковых версий, поэтому canonical URL всегда без языкового префикса
         if (isset($productArray['slug'])) {
-            $baseUrl = rtrim(config('app.url', 'https://sancan.ru'), '/');
+            $baseUrl = rtrim(config('app.url', 'https://api.treabo.md'), '/');
             if (!empty($productArray['slug_numeric_code'])) {
                 // Новый формат с 12-значным кодом
                 $fullSlug = "{$productArray['slug']}-{$productArray['slug_numeric_code']}";

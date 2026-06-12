@@ -253,7 +253,7 @@ class SellerBalanceController extends Controller
                 $config = new YooKassaConfig($shopId, $secretKey, $isTest);
                 $service = new YooKassaService($config);
 
-                $returnUrl = config('app.admin_url', 'https://seller.sancan.ru') . '/dashboard/billing?deposit=success';
+                $returnUrl = config('shop.dashboard_url') . '/dashboard/billing?deposit=success';
                 $description = "Пополнение баланса на сумму {$amount} ₽";
 
                 // Формируем receipt для ЮKassa (54-ФЗ) - обязателен для боевого режима

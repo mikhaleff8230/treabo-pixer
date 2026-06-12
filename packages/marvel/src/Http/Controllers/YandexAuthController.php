@@ -42,6 +42,9 @@ class YandexAuthController extends CoreController
      */
     public function callback(Request $request)
     {
+        $shopUrl = rtrim(config('shop.shop_url', config('app.url')), '/');
+        $cookieDomain = config('cookie.domain', '.treabo.md');
+
         try {
             Log::info('Yandex OAuth callback: started', [
                 'has_code' => $request->has('code'),
@@ -55,13 +58,13 @@ class YandexAuthController extends CoreController
                     'error' => $request->get('error'),
                     'error_description' => $request->get('error_description'),
                 ]);
-                return redirect('https://sancan.ru/')->with('error', 'Ошибка авторизации: ' . $request->get('error'));
+                return redirect($shopUrl . '/')->with('error', 'Ошибка авторизации: ' . $request->get('error'));
             }
 
             // Проверяем наличие кода
             if (!$request->has('code')) {
                 Log::error('Yandex OAuth callback: missing code');
-                return redirect('https://sancan.ru/')->with('error', 'Отсутствует код авторизации');
+                return redirect($shopUrl . '/')->with('error', 'Отсутствует код авторизации');
             }
 
             // Получаем данные пользователя от Яндекса (БЕЗ scopes в callback!)
@@ -89,12 +92,12 @@ class YandexAuthController extends CoreController
             // Проверяем обязательные данные
             if (empty($yUser->getId())) {
                 Log::error('Yandex OAuth callback: empty yandex_id');
-                return redirect('https://sancan.ru/')->with('error', 'Не получен ID пользователя от Яндекса');
+                return redirect($shopUrl . '/')->with('error', 'Не получен ID пользователя от Яндекса');
             }
 
             if (empty($yUser->getEmail())) {
                 Log::error('Yandex OAuth callback: empty email');
-                return redirect('https://sancan.ru/')->with('error', 'Не получен email от Яндекса');
+                return redirect($shopUrl . '/')->with('error', 'Не получен email от Яндекса');
             }
 
             // Ищем пользователя по yandex_id
@@ -171,7 +174,7 @@ class YandexAuthController extends CoreController
                 $token,             // значение
                 60 * 24,            // срок жизни в минутах (1 день)
                 '/',                // path
-                '.sancan.ru',       // домен (доступно для sancan.ru и api.sancan.ru)
+                $cookieDomain,
                 true,               // secure
                 false,              // httpOnly = false, чтобы JS (js-cookie) мог читать
                 false,              // raw
@@ -185,7 +188,7 @@ class YandexAuthController extends CoreController
 
             // Передаём токен и флаг успешной авторизации в URL,
             // чтобы фронтенд (Next.js) смог вызвать useAuth().authorize(token)
-            $redirectUrl = 'https://sancan.ru/auth/success?yandex_auth=success&mode=login&token=' . urlencode($token);
+            $redirectUrl = $shopUrl . '/auth/success?yandex_auth=success&mode=login&token=' . urlencode($token);
 
             return redirect($redirectUrl)->withCookie($cookie);
             
@@ -197,7 +200,7 @@ class YandexAuthController extends CoreController
                 'trace' => $e->getTraceAsString(),
             ]);
             
-            return redirect('https://sancan.ru/')->with('error', 'Ошибка при авторизации через Яндекс: ' . $e->getMessage());
+            return redirect($shopUrl . '/')->with('error', 'Ошибка при авторизации через Яндекс: ' . $e->getMessage());
         }
     }
 

@@ -37,7 +37,7 @@ echo "✅ Пользователь найден: ID={$user->id}, Name={$user->na
 
 echo "2. Попытка входа через API /token...\n";
 // Используем правильный URL для продакшена
-$baseUrl = env('APP_URL', 'https://api.sancan.ru');
+$baseUrl = env('APP_URL', 'https://api.treabo.md');
 if (substr($baseUrl, -4) !== '/api') {
     $baseUrl = rtrim($baseUrl, '/') . '/api';
 }

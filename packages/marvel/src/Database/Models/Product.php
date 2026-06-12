@@ -736,7 +736,7 @@ class Product extends Model
      */
     public function getCanonicalUrlAttribute(): string
     {
-        $baseUrl = rtrim(config('app.url', 'https://sancan.ru'), '/');
+        $baseUrl = rtrim(config('app.url', 'https://api.treabo.md'), '/');
         $fullSlug = $this->full_slug;
         return "{$baseUrl}/element/{$fullSlug}";
     }

@@ -20,11 +20,10 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'https://sancan.ru',
-        'https://www.sancan.ru',
-        'https://admin.sancan.ru',
-        'https://seller.sancan.ru',
-        'https://api.sancan.ru',
+        'https://treabo.md',
+        'https://www.treabo.md',
+        'https://seller.treabo.md',
+        'https://api.treabo.md',
         'http://localhost:3000'
     ],
 

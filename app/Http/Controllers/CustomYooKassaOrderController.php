@@ -269,7 +269,7 @@ class CustomYooKassaOrderController extends Controller
 
             // Создаем платеж для виджета
             // returnUrl - это URL на фронтенде, куда вернется пользователь после оплаты
-            $returnUrl = 'https://sancan.ru/payment/success';
+            $returnUrl = rtrim(config('shop.shop_url'), '/') . '/payment/success';
             
             \Log::info('CustomYooKassaOrderController: создаем платеж для виджета', [
                 'order_id' => $order->tracking_number,

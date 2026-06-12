@@ -100,7 +100,7 @@ class AdditionalPurchaseController extends Controller
                 $config = new \App\Services\YooKassa\YooKassaConfig($shopId, $secretKey, $isTest);
                 $service = new \App\Services\YooKassa\YooKassaService($config);
 
-                $returnUrl = config('app.frontend_url', 'https://sancan.ru') . '/dashboard/billing?purchase=success';
+                $returnUrl = config('shop.dashboard_url') . '/dashboard/billing?purchase=success';
                 $typeLabel = $request->type === 'product' ? 'товаров' : 'плейсов';
                 $description = "Покупка {$request->quantity} дополнительных {$typeLabel}";
 

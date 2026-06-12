@@ -149,7 +149,7 @@ class CreateFilamentAdmin extends Command
             $this->info("   ID: {$user->id}");
             $this->newLine();
             $this->info("Теперь вы можете войти в Filament панель:");
-            $this->info("   URL: https://api.sancan.ru/admin/login");
+            $this->info("   URL: " . rtrim(config('app.url'), '/') . '/admin/login');
             $this->info("   Email: {$user->email}");
             $this->info("   Пароль: (введенный вами пароль)");
 

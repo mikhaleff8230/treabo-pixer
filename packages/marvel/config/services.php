@@ -147,7 +147,7 @@ return [
     'yandex' => [
         'client_id' => env('YANDEX_CLIENT_ID'),
         'client_secret' => env('YANDEX_CLIENT_SECRET'),
-        'redirect' => env('YANDEX_REDIRECT_URI', 'https://sancan.ru/auth/yandex/callback'),
+        'redirect' => env('YANDEX_REDIRECT_URI', 'https://api.treabo.md/api/auth/oauth/yandex/callback'),
     ],
 
 ];

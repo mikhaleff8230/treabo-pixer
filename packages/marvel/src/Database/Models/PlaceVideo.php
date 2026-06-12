@@ -161,10 +161,11 @@ class PlaceVideo extends Model
         }
 
         // Fallback: старое поведение через домен API
+        $baseUrl = rtrim(config('app.url'), '/');
         if (str_starts_with($path, '/storage/')) {
-            return 'https://api.sancan.ru' . $path;
+            return $baseUrl . $path;
         }
-        return 'https://api.sancan.ru/storage/' . ltrim($path, '/');
+        return $baseUrl . '/storage/' . ltrim($path, '/');
     }
 
     /**

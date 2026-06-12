@@ -84,7 +84,7 @@ class FixFilamentGuard extends Command
             $this->newLine();
             $this->info("✅ Проблема с guard исправлена!");
             $this->info("Теперь попробуйте войти в Filament:");
-            $this->info("   URL: https://api.sancan.ru/admin/login");
+            $this->info("   URL: " . rtrim(config('app.url'), '/') . '/admin/login');
             $this->info("   Email: {$user->email}");
 
             return 0;

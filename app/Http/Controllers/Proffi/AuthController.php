@@ -348,7 +348,14 @@ class AuthController extends Controller
     {
         if (str_starts_with($url, 'proffi://')) return true;
         $host = parse_url($url, PHP_URL_HOST);
-        return in_array($host, ['127.0.0.1', 'localhost', 'sancan.ru', 'www.sancan.ru'], true);
+        return in_array($host, [
+            '127.0.0.1',
+            'localhost',
+            'treabo.md',
+            'www.treabo.md',
+            'seller.treabo.md',
+            'api.treabo.md',
+        ], true);
     }
 
     private function emailFromPhone(string $phone): string

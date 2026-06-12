@@ -78,9 +78,9 @@ From backend repo:
 
 ```bash
 cd /var/www/treabo/pixer-api
-export TREABO_DOMAIN=treabo.example.com
-export TREABO_ADMIN_DOMAIN=admin.treabo.example.com
-export TREABO_API_DOMAIN=api.treabo.example.com
+export TREABO_DOMAIN=treabo.md
+export TREABO_ADMIN_DOMAIN=seller.treabo.md
+export TREABO_API_DOMAIN=api.treabo.md
 
 docker compose -p treabo -f deploy/treabo-compose.yml up -d --build
 ```

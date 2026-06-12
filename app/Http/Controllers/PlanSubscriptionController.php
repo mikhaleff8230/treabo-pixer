@@ -228,7 +228,7 @@ class PlanSubscriptionController extends Controller
                 $config = new \App\Services\YooKassa\YooKassaConfig($shopId, $secretKey, $isTest);
                 $service = new \App\Services\YooKassa\YooKassaService($config);
 
-                $returnUrl = config('app.frontend_url', 'https://sancan.ru') . '/dashboard/billing?payment=success';
+                $returnUrl = config('shop.dashboard_url') . '/dashboard/billing?payment=success';
                 $description = "Оплата тарифа {$plan->name} за период {$startDate->format('d.m.Y')} - {$endDate->format('d.m.Y')}";
 
                 // Формируем receipt для ЮKassa (54-ФЗ) - обязателен для боевого режима

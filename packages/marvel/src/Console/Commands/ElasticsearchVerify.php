@@ -203,7 +203,7 @@ class ElasticsearchVerify extends Command
         // 6. Check API endpoints (if detailed)
         if ($this->option('detailed')) {
             $this->info('6️⃣  Checking API endpoints...');
-            $baseUrl = config('app.url', 'https://api.sancan.ru');
+            $baseUrl = config('app.url', 'https://api.treabo.md');
             
             $endpoints = [
                 '/api/search?q=тест&type=products' => 'Search endpoint',

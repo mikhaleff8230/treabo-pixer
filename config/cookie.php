@@ -44,7 +44,7 @@ return [
     |
     */
 
-    'domain' => env('COOKIE_DOMAIN', '.sancan.ru'),
+    'domain' => env('COOKIE_DOMAIN', '.treabo.md'),
 
     /*
     |--------------------------------------------------------------------------

@@ -17,7 +17,7 @@ class SitemapController extends CoreController
     public function index()
     {
         
-        $baseUrl = 'https://sancan.ru';
+        $baseUrl = rtrim(config('shop.shop_url', config('app.url')), '/');
         $sitemapDir = public_path('sitemaps');
         
         // Создаем директорию для sitemap если не существует

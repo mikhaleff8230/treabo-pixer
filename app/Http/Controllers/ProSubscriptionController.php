@@ -167,7 +167,7 @@ class ProSubscriptionController extends Controller
                 $config = new \App\Services\YooKassa\YooKassaConfig($shopId, $secretKey, $isTest);
                 $service = new \App\Services\YooKassa\YooKassaService($config);
 
-                $returnUrl = config('app.admin_url', 'https://seller.sancan.ru') . '/dashboard/billing?subscription=success';
+                $returnUrl = config('shop.dashboard_url') . '/dashboard/billing?subscription=success';
                 $description = "Подписка PRO на 30 дней";
 
                 // Формируем receipt для ЮKassa (54-ФЗ)

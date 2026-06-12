@@ -47,7 +47,7 @@ class PlaceController extends CoreController
     // === МЕТОДЫ ДЛЯ CANONICAL URL ===
     protected function generateCanonicalUrl($place, Request $request): string
     {
-        $baseUrl = rtrim(config('app.url', 'https://sancan.ru'), '/');
+        $baseUrl = rtrim(config('app.url', 'https://api.treabo.md'), '/');
         
         // Получаем id
         if (is_array($place)) {
@@ -76,7 +76,7 @@ class PlaceController extends CoreController
 
     protected function generateHreflangTags($place, Request $request): array
     {
-        $baseUrl = rtrim(config('app.url', 'https://sancan.ru'), '/');
+        $baseUrl = rtrim(config('app.url', 'https://api.treabo.md'), '/');
         
         // Получаем id
         if (is_array($place)) {
