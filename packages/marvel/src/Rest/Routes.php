@@ -523,10 +523,12 @@ Route::get('/payment-intent', [PaymentIntentController::class, 'getPaymentIntent
 
 Route::post('free-downloads/digital-file', [DownloadController::class, 'generateFreeDigitalDownloadableUrl']);
 
+// Any authenticated user (admin, seller, customer) — required by Next.js admin /me
+Route::middleware(['auth:sanctum', 'email.verified'])->get('me', [UserController::class, 'me']);
+
 Route::group(['middleware' => ['can:' . Permission::CUSTOMER, 'auth:sanctum', 'email.verified']], function () {
 
     Route::post('/update-email', [UserController::class, 'updateUserEmail']);
-    Route::get('me', [UserController::class, 'me']);
 
     Route::apiResource('orders', OrderController::class, [
         'only' => ['index'],

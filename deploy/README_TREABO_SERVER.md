@@ -126,12 +126,18 @@ Set the same secret in API and admin (login page → «Treabo admin token» or e
 PROFFI_ADMIN_TOKEN=your-long-random-token
 ```
 
-Create a Marvel super-admin (email login on seller):
+Create a Marvel super-admin for **Next.js admin** (`seller.treabo.md/login`):
 
 ```bash
-docker compose -p treabo -f deploy/treabo-compose.yml exec api php artisan filament:create-admin \
+docker compose -p treabo -f deploy/treabo-compose.yml exec api php artisan treabo:create-admin \
   --email=admin@treabo.md --password='YourSecurePass123' --name='Admin'
 ```
+
+(`filament:create-admin` does the same DB work but is legacy naming — Treabo admin is **Next.js only**, not Filament.)
+
+Do **not** open `https://api.treabo.md/token` in the browser — that URL accepts **POST only** (login XHR from seller). A GET shows «405 Method Not Allowed» and is normal.
+
+Filament at `api.treabo.md/admin` is a separate Laravel UI and is **not** used by seller.treabo.md.
 
 Rebuild admin after env change (`NEXT_PUBLIC_*` is baked at build time):
 
