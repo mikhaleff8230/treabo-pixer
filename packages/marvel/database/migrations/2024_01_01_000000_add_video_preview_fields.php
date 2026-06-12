@@ -8,6 +8,10 @@ class AddVideoPreviewFields extends Migration
 {
     public function up()
     {
+        if (!Schema::hasTable('place_videos')) {
+            return;
+        }
+
         // Добавляем preview_url если не существует
         if (!Schema::hasColumn('place_videos', 'preview_url')) {
             Schema::table('place_videos', function (Blueprint $table) {
@@ -32,6 +36,10 @@ class AddVideoPreviewFields extends Migration
 
     public function down()
     {
+        if (!Schema::hasTable('place_videos')) {
+            return;
+        }
+
         // Удаляем preview_url если существует
         if (Schema::hasColumn('place_videos', 'preview_url')) {
             Schema::table('place_videos', function (Blueprint $table) {
