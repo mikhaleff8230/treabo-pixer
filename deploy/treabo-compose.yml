@@ -69,6 +69,10 @@ services:
       dockerfile: Dockerfile.production
     env_file:
       - ../../shop/.env.production
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
     depends_on:
       - api
     restart: unless-stopped
