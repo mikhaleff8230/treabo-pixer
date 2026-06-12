@@ -73,6 +73,8 @@ services:
       NODE_ENV: production
       HOSTNAME: 0.0.0.0
       PORT: 3000
+      DISABLE_PWA: "true"
+    command: ["/usr/local/bin/docker-start.sh"]
     depends_on:
       - api
     restart: unless-stopped
@@ -98,6 +100,7 @@ services:
       NGINX_ENVSUBST_FILTER: "^TREABO_"
     volumes:
       - ./nginx/templates:/etc/nginx/templates:ro
+      - ./nginx/docker-entrypoint.d/99-remove-default.sh:/docker-entrypoint.d/99-remove-default.sh:ro
     depends_on:
       - api
       - shop
