@@ -1,0 +1,13 @@
+.git
+.env
+.env.*
+vendor
+node_modules
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+*.sql
+*.log
+*.backup
+*.bak

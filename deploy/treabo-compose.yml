@@ -1,0 +1,105 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile.proffi
+    working_dir: /var/www/html
+    env_file:
+      - ../.env.production
+    environment:
+      COMPOSER_PROCESS_TIMEOUT: "1800"
+    volumes:
+      - ..:/var/www/html
+      - composer_cache:/tmp/composer-cache
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+    command: >
+      sh -lc "mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/testing storage/framework/views bootstrap/cache
+      && (test -f vendor/autoload.php || COMPOSER_CACHE_DIR=/tmp/composer-cache composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader)
+      && php artisan storage:link || true
+      && php artisan migrate --force
+      && php artisan optimize:clear
+      && php artisan serve --host=0.0.0.0 --port=8000"
+
+  queue:
+    build:
+      context: ..
+      dockerfile: Dockerfile.proffi
+    working_dir: /var/www/html
+    env_file:
+      - ../.env.production
+    volumes:
+      - ..:/var/www/html
+      - composer_cache:/tmp/composer-cache
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+    command: >
+      sh -lc "(test -f vendor/autoload.php || COMPOSER_CACHE_DIR=/tmp/composer-cache composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader)
+      && php artisan queue:work --sleep=3 --tries=3 --timeout=120"
+
+  mysql:
+    image: mysql:8.0
+    platform: linux/x86_64
+    env_file:
+      - ./env/mysql.env
+    volumes:
+      - treabo_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-umarvel_laravel", "-p$${MYSQL_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+
+  shop:
+    build:
+      context: ../../shop
+      dockerfile: Dockerfile.production
+    env_file:
+      - ../../shop/.env.production
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  admin:
+    build:
+      context: ../../admin
+      dockerfile: Dockerfile.production
+    env_file:
+      - ../../admin/.env.production
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "80:80"
+    environment:
+      TREABO_DOMAIN: ${TREABO_DOMAIN:-treabo.example.com}
+      TREABO_ADMIN_DOMAIN: ${TREABO_ADMIN_DOMAIN:-admin.treabo.example.com}
+      TREABO_API_DOMAIN: ${TREABO_API_DOMAIN:-api.treabo.example.com}
+      NGINX_ENVSUBST_FILTER: "^TREABO_"
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates:ro
+    depends_on:
+      - api
+      - shop
+      - admin
+    restart: unless-stopped
+
+volumes:
+  composer_cache:
+  treabo_mysql:
