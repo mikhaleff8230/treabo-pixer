@@ -82,6 +82,10 @@ services:
     build:
       context: ../../admin
       dockerfile: Dockerfile.production
+      args:
+        NEXT_PUBLIC_REST_API_ENDPOINT: ${ADMIN_API_URL:-https://api.treabo.md}
+        NEXT_PUBLIC_API_URL: ${ADMIN_API_URL:-https://api.treabo.md}
+        NEXT_PUBLIC_SHOP_URL: ${ADMIN_SHOP_URL:-https://treabo.md}
     env_file:
       - ../../admin/.env.production
     environment:
