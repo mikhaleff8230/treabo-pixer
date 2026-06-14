@@ -197,6 +197,48 @@ class AdminController extends Controller
             ->values();
     }
 
+    public function createTask(Request $request)
+    {
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:512'],
+            'description' => ['required', 'string'],
+            'category' => ['required', 'string', 'max:64'],
+            'city' => ['required', 'string', 'max:128'],
+            'address' => ['nullable', 'string', 'max:512'],
+            'budget' => ['nullable', 'integer', 'min:0'],
+            'response_price_mdl' => ['nullable', 'integer', 'min:0'],
+            'deadline' => ['nullable', 'string', 'max:64'],
+            'status' => ['nullable', 'in:open,in_progress,done,cancelled'],
+            'customer_id' => ['required', 'integer', 'exists:users,id'],
+            'lat' => ['nullable', 'numeric'],
+            'lng' => ['nullable', 'numeric'],
+        ]);
+
+        $task = ProffiTask::create([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'category' => $data['category'],
+            'city' => $data['city'],
+            'address' => $data['address'] ?? null,
+            'budget' => $data['budget'] ?? null,
+            'response_price_mdl' => $data['response_price_mdl'] ?? 15,
+            'deadline' => $data['deadline'] ?? null,
+            'status' => $data['status'] ?? 'open',
+            'customer_id' => $data['customer_id'],
+            'lat' => $data['lat'] ?? null,
+            'lng' => $data['lng'] ?? null,
+            'photos' => [],
+        ]);
+
+        return response()->json($this->mapTask($task->load(['customer.profile', 'acceptedSpecialist.profile'])), 201);
+    }
+
+    public function deleteTask(ProffiTask $task)
+    {
+        $task->delete();
+        return ['ok' => true];
+    }
+
     public function applications()
     {
         return ProffiApplication::with(['task', 'specialist.profile'])

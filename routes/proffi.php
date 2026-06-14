@@ -102,6 +102,8 @@ Route::middleware(ProffiAdminToken::class)->prefix('admin')->group(function () {
     Route::delete('/filters/{id}', [AdminController::class, 'deleteFilter']);
 
     Route::get('/tasks', [AdminController::class, 'tasks']);
+    Route::post('/tasks', [AdminController::class, 'createTask']);
+    Route::delete('/tasks/{task}', [AdminController::class, 'deleteTask']);
     Route::get('/applications', [AdminController::class, 'applications']);
     Route::get('/chats', [AdminController::class, 'chats']);
     Route::get('/chats/{chat}/messages', [AdminController::class, 'chatMessages']);
