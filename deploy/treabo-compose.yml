@@ -104,9 +104,9 @@ services:
     ports:
       - "80:80"
     environment:
-      TREABO_DOMAIN: ${TREABO_DOMAIN:-treabo.example.com}
-      TREABO_ADMIN_DOMAIN: ${TREABO_ADMIN_DOMAIN:-admin.treabo.example.com}
-      TREABO_API_DOMAIN: ${TREABO_API_DOMAIN:-api.treabo.example.com}
+      TREABO_DOMAIN: ${TREABO_DOMAIN:-treabo.md www.treabo.md}
+      TREABO_ADMIN_DOMAIN: ${TREABO_ADMIN_DOMAIN:-seller.treabo.md}
+      TREABO_API_DOMAIN: ${TREABO_API_DOMAIN:-api.treabo.md}
       NGINX_ENVSUBST_FILTER: "^TREABO_"
     volumes:
       - ./nginx/templates:/etc/nginx/templates:ro
